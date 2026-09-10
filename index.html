@@ -1,0 +1,2352 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VocabMaster - Interactive English Learning</title>
+    <style>
+        :root {
+            --bg-main: #f4f6f9;
+            --bg-card: #ffffff;
+            --bg-hover: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --text-inverse: #ffffff;
+            
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #e0e7ff;
+            --primary-text: #3730a3;
+            
+            --secondary: #06b6d4;
+            --secondary-light: #cff4fc;
+            
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --success-text: #065f46;
+            
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --warning-text: #92400e;
+            
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --danger-text: #991b1b;
+            
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            
+            --nav-height: 64px;
+            --sidebar-width: 250px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-hover: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            --primary: #6366f1;
+            --primary-hover: #818cf8;
+            --primary-light: #312e81;
+            --primary-text: #e0e7ff;
+            
+            --success-light: #064e3b;
+            --success-text: #a7f3d0;
+            
+            --warning-light: #78350f;
+            --warning-text: #fde68a;
+            
+            --danger-light: #7f1d1d;
+            --danger-text: #fca5a5;
+            
+            --border: #334155;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+            padding-bottom: var(--nav-height);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding-bottom: 0;
+                padding-left: var(--sidebar-width);
+            }
+        }
+
+        /* App Layout */
+        #app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        /* Sidebar & Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        @media (min-width: 768px) {
+            .navigation {
+                top: 0;
+                right: auto;
+                width: var(--sidebar-width);
+                height: 100vh;
+                border-top: none;
+                border-right: 1px solid var(--border);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 30px 16px;
+                gap: 12px;
+                box-shadow: none;
+            }
+        }
+
+        .nav-logo {
+            display: none;
+            width: 100%;
+            padding: 0 12px 20px 12px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 12px;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .nav-logo { display: flex; }
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            width: 100%;
+            padding: 8px 0;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            transition: var(--transition);
+        }
+
+        @media (min-width: 768px) {
+            .nav-item {
+                flex-direction: row;
+                justify-content: flex-start;
+                padding: 12px 16px;
+                font-size: 1rem;
+                gap: 14px;
+            }
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        @media (min-width: 768px) {
+            .nav-item.active {
+                background: var(--primary-light);
+                color: var(--primary);
+            }
+        }
+
+        .nav-icon {
+            font-size: 1.3rem;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .top-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .top-stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            background: var(--bg-hover);
+        }
+
+        .stat-pill.streak { color: #f97316; background: #ffedd5; }
+        [data-theme="dark"] .stat-pill.streak { background: #7c2d12; color: #ffedd5; }
+
+        /* Sections */
+        .app-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .app-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* UI Components */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 18px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            outline: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--text-inverse);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--bg-hover);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #ffffff;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: #ffffff;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #ffffff;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .btn-lg {
+            padding: 14px 24px;
+            font-size: 1.1rem;
+            border-radius: var(--radius-md);
+            width: 100%;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Progress Bar */
+        .progress-box {
+            margin-bottom: 20px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .progress-bar-bg {
+            height: 12px;
+            background: var(--border);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-full);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Flashcard Component */
+        .flashcard-wrapper {
+            perspective: 1000px;
+            margin-bottom: 24px;
+        }
+
+        .flashcard {
+            width: 100%;
+            min-height: 280px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border-radius: var(--radius-lg);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 28px;
+            border-radius: var(--radius-lg);
+            overflow-y: auto;
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            background: var(--bg-card);
+        }
+
+        .flashcard-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-new { background: var(--primary-light); color: var(--primary); }
+        .badge-learning { background: #e0f2fe; color: #0369a1; }
+        .badge-review { background: var(--warning-light); color: var(--warning-text); }
+        .badge-mastered { background: var(--success-light); color: var(--success-text); }
+
+        .flashcard-body {
+            text-align: center;
+            margin: auto 0;
+            padding: 16px 0;
+        }
+
+        .fc-word {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .fc-ipa {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-family: monospace, sans-serif;
+            margin-bottom: 8px;
+        }
+
+        .fc-pos {
+            font-style: italic;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .fc-definition {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .fc-vietnamese {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary);
+            background: var(--primary-light);
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+        }
+
+        .fc-example {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-style: italic;
+            border-left: 3px solid var(--primary);
+            padding-left: 12px;
+            text-align: left;
+            background: var(--bg-main);
+            padding: 10px 14px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+
+        .flashcard-footer {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Controls */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 480px) {
+            .controls-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .status-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        /* Vocabulary Browser */
+        .browser-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        @media (min-width: 600px) {
+            .browser-controls {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        .search-input {
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            width: 100%;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .filter-tab {
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: var(--bg-hover);
+            color: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+
+        .filter-tab.active {
+            background: var(--primary);
+            color: var(--text-inverse);
+        }
+
+        .vocab-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        @media (min-width: 600px) {
+            .vocab-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .vocab-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .vocab-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .vocab-item-word {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .vocab-item-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Practice Section */
+        .practice-card {
+            text-align: center;
+            padding: 32px 20px;
+        }
+
+        .quiz-question {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--text-main);
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 600px) {
+            .quiz-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .option-btn {
+            padding: 14px 18px;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-main);
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .option-btn.correct {
+            border-color: var(--success);
+            background: var(--success-light);
+            color: var(--success-text);
+        }
+
+        .option-btn.incorrect {
+            border-color: var(--danger);
+            background: var(--danger-light);
+            color: var(--danger-text);
+        }
+
+        .spelling-input {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.2rem;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-main);
+            text-align: center;
+            margin-bottom: 16px;
+            outline: none;
+        }
+
+        .spelling-input:focus {
+            border-color: var(--primary);
+        }
+
+        .feedback-box {
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: left;
+            display: none;
+        }
+
+        .feedback-box.show { display: block; }
+        .feedback-box.correct { background: var(--success-light); color: var(--success-text); border: 1px solid var(--success); }
+        .feedback-box.incorrect { background: var(--danger-light); color: var(--danger-text); border: 1px solid var(--danger); }
+
+        /* Progress / Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 600px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 18px;
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Form Controls */
+        .setting-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .setting-group:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            font-weight: 600;
+        }
+
+        .setting-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border);
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        select.setting-select {
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-container {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            max-width: 500px;
+            width: 100%;
+            padding: 28px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+        }
+
+        /* Speaking pulse */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .speaking-active {
+            animation: pulse 1s infinite;
+            color: var(--secondary) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <!-- Sidebar Navigation (Desktop) / Bottom Bar (Mobile) -->
+        <nav class="navigation">
+            <div class="nav-logo">
+                <span>📘</span> VocabMaster
+            </div>
+            <button class="nav-item active" onclick="switchSection('learn')">
+                <span class="nav-icon">🏠</span>
+                <span>Learn</span>
+            </button>
+            <button class="nav-item" onclick="switchSection('practice')">
+                <span class="nav-icon">📝</span>
+                <span>Practice</span>
+            </button>
+            <button class="nav-item" onclick="switchSection('progress')">
+                <span class="nav-icon">📊</span>
+                <span>Progress</span>
+            </button>
+            <button class="nav-item" onclick="switchSection('settings')">
+                <span class="nav-icon">⚙️</span>
+                <span>Settings</span>
+            </button>
+        </nav>
+
+        <!-- Top Header Bar -->
+        <header class="top-bar">
+            <div class="top-title" id="page-title">Learn Vocabulary</div>
+            <div class="top-stats">
+                <div class="stat-pill streak" title="Daily Study Streak">
+                    🔥 <span id="streak-count">0</span> days
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="container">
+            
+            <!-- ==================== 1. LEARN SECTION ==================== -->
+            <section id="section-learn" class="app-section active">
+                
+                <!-- Daily Progress Bar Card -->
+                <div class="card">
+                    <div class="progress-box">
+                        <div class="progress-info">
+                            <span>Today's Progress</span>
+                            <span id="daily-progress-text">0 / 20 words</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="daily-progress-bar"></div>
+                        </div>
+                    </div>
+                    <div id="review-due-banner" style="display: none; justify-content: space-between; align-items: center; background: var(--warning-light); padding: 10px 14px; border-radius: var(--radius-md); color: var(--warning-text);">
+                        <span style="font-weight:600; font-size:0.9rem;">🔁 Due for Review: <strong id="review-due-count">0</strong> words</span>
+                        <button class="btn btn-warning btn-sm" onclick="startReviewSession()">Review Now</button>
+                    </div>
+                </div>
+
+                <!-- Interactive Flashcard Component -->
+                <div class="flashcard-wrapper">
+                    <div class="flashcard" id="flashcard" onclick="flipCard()">
+                        <!-- Card Front -->
+                        <div class="flashcard-face flashcard-front">
+                            <div class="flashcard-top">
+                                <span class="badge badge-new" id="fc-status">NEW</span>
+                                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); playCurrentPronunciation()" title="Listen Pronunciation" id="btn-listen-front">
+                                    🔊 Listen
+                                </button>
+                            </div>
+                            <div class="flashcard-body">
+                                <div class="fc-word" id="fc-word">alternative</div>
+                                <div class="fc-ipa" id="fc-ipa">/ɔːlˈtɜːnətɪv/</div>
+                                <div class="fc-pos" id="fc-pos">noun</div>
+                            </div>
+                            <div class="flashcard-footer">
+                                💡 Tap or press Space to flip card
+                            </div>
+                        </div>
+                        <!-- Card Back -->
+                        <div class="flashcard-face flashcard-back">
+                            <div class="flashcard-top">
+                                <span class="badge badge-new" id="fc-status-back">NEW</span>
+                                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); playCurrentPronunciation()" title="Listen Pronunciation">
+                                    🔊 Listen
+                                </button>
+                            </div>
+                            <div class="flashcard-body">
+                                <div class="fc-definition" id="fc-def">something that can be used or chosen instead of another thing</div>
+                                <div class="fc-vietnamese" id="fc-viet">Sự lựa chọn thay thế</div>
+                                <div class="fc-example" id="fc-example">"We need to find an alternative solution."</div>
+                            </div>
+                            <div class="flashcard-footer">
+                                💡 Tap to flip back to front
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Primary Control Buttons -->
+                <div class="controls-grid">
+                    <button class="btn btn-secondary" onclick="prevCard()" title="Previous (Left Arrow)">← Prev</button>
+                    <button class="btn btn-primary" onclick="flipCard()" title="Flip (Space)">🔄 Flip</button>
+                    <button class="btn btn-secondary" onclick="nextCard()" title="Next (Right Arrow)">Next →</button>
+                    <button class="btn btn-secondary" onclick="randomCard()" title="Random">🎲 Random</button>
+                </div>
+
+                <!-- Status Action Buttons -->
+                <div class="status-actions">
+                    <button class="btn btn-warning" onclick="markCardStatus('review')">🔁 Need Review</button>
+                    <button class="btn btn-success" onclick="markCardStatus('know')">✓ Know It</button>
+                </div>
+
+                <!-- Vocabulary Browser Grid -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Vocabulary Browser (<span id="vocab-count">0</span>)</div>
+                    </div>
+                    <div class="browser-controls">
+                        <input type="text" id="search-vocab" class="search-input" placeholder="Search vocabulary..." oninput="renderVocabBrowser()">
+                        <div class="filter-tabs">
+                            <button class="filter-tab active" onclick="setVocabFilter('all', this)">All</button>
+                            <button class="filter-tab" onclick="setVocabFilter('new', this)">New</button>
+                            <button class="filter-tab" onclick="setVocabFilter('learning', this)">Learning</button>
+                            <button class="filter-tab" onclick="setVocabFilter('review', this)">Review</button>
+                            <button class="filter-tab" onclick="setVocabFilter('mastered', this)">Mastered</button>
+                        </div>
+                    </div>
+                    <div class="vocab-list" id="vocab-list-container">
+                        <!-- Items rendered via JS -->
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- ==================== 2. PRACTICE SECTION ==================== -->
+            <section id="section-practice" class="app-section">
+                
+                <!-- Quiz Config View -->
+                <div id="practice-config-card" class="card">
+                    <div class="card-title" style="margin-bottom: 16px;">Practice Session Setup</div>
+                    
+                    <div class="setting-group">
+                        <div>
+                            <div class="setting-label">Question Count</div>
+                            <div class="setting-desc">Number of questions per session</div>
+                        </div>
+                        <select id="practice-count-select" class="setting-select">
+                            <option value="10">10 Questions</option>
+                            <option value="20" selected>20 Questions</option>
+                            <option value="30">30 Questions</option>
+                            <option value="50">50 Questions</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <div>
+                            <div class="setting-label">Vocabulary Filter</div>
+                            <div class="setting-desc">Select target words</div>
+                        </div>
+                        <select id="practice-pool-select" class="setting-select">
+                            <option value="all">All Vocabulary</option>
+                            <option value="learning">Learning / Review Only</option>
+                            <option value="mistakes">Mistakes Only</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <div>
+                            <div class="setting-label">Exercise Mode</div>
+                            <div class="setting-desc">Type of practice activity</div>
+                        </div>
+                        <select id="practice-mode-select" class="setting-select">
+                            <option value="mixed">Mixed Types (Recommended)</option>
+                            <option value="word-def">Word → Definition</option>
+                            <option value="def-word">Definition → Word</option>
+                            <option value="fill-blank">Fill in the Blank</option>
+                            <option value="listening">Listening Practice</option>
+                            <option value="spelling">Spelling Challenge</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg" style="margin-top: 20px;" onclick="startPracticeSession()">🚀 Start Practice</button>
+                </div>
+
+                <!-- Active Quiz Container -->
+                <div id="practice-active-card" class="card practice-card" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 0.9rem; color: var(--text-muted); font-weight: 600;">
+                        <span id="quiz-progress-text">Question 1 / 20</span>
+                        <span id="quiz-score-text">Score: 0</span>
+                    </div>
+
+                    <div id="quiz-question-container">
+                        <!-- Dynamic Question Header -->
+                        <div class="quiz-question" id="quiz-prompt">What does "alternative" mean?</div>
+                        
+                        <!-- Listening Audio Trigger -->
+                        <div id="quiz-audio-trigger" style="display: none; margin-bottom: 20px;">
+                            <button class="btn btn-secondary btn-lg" onclick="playCurrentQuizAudio()">🔊 Listen Word</button>
+                        </div>
+
+                        <!-- Multiple Choice Grid -->
+                        <div class="quiz-options" id="quiz-options-grid"></div>
+
+                        <!-- Text Spelling Input -->
+                        <div id="quiz-spelling-box" style="display: none;">
+                            <input type="text" id="spelling-input" class="spelling-input" placeholder="Type answer here..." autocomplete="off">
+                            <button class="btn btn-primary btn-lg" onclick="submitSpellingAnswer()">Submit Answer</button>
+                        </div>
+                    </div>
+
+                    <!-- Instant Feedback Box -->
+                    <div class="feedback-box" id="quiz-feedback"></div>
+
+                    <!-- Next Button -->
+                    <button class="btn btn-primary btn-lg" id="quiz-next-btn" style="display: none; margin-top: 16px;" onclick="nextQuizQuestion()">Next Question →</button>
+                </div>
+
+                <!-- Practice Results Modal / Card -->
+                <div id="practice-result-card" class="card text-center" style="display: none; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">🎉</div>
+                    <div class="card-title" style="font-size: 1.5rem; margin-bottom: 8px;">Practice Complete!</div>
+                    <div style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 24px;">Great effort on your session.</div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="res-score">0/0</div>
+                            <div class="stat-label">Final Score</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="res-accuracy">0%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="res-correct" style="color: var(--success);">0</div>
+                            <div class="stat-label">Correct</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="res-incorrect" style="color: var(--danger);">0</div>
+                            <div class="stat-label">Mistakes</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; flex-direction: column;">
+                        <button class="btn btn-warning" id="btn-review-mistakes" style="display: none;" onclick="startMistakeReview()">❌ Review Session Mistakes</button>
+                        <button class="btn btn-primary" onclick="resetPracticeConfig()">Practice Again</button>
+                        <button class="btn btn-secondary" onclick="switchSection('learn')">Back to Learn</button>
+                    </div>
+                </div>
+
+                <!-- Mistake List Manager Card -->
+                <div class="card" style="margin-top: 24px;">
+                    <div class="card-header">
+                        <div class="card-title">Saved Mistakes Queue (<span id="mistake-count-badge">0</span>)</div>
+                    </div>
+                    <div id="mistakes-list-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- ==================== 3. PROGRESS SECTION ==================== -->
+            <section id="section-progress" class="app-section">
+                
+                <!-- Top Summary Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-total-words">0</div>
+                        <div class="stat-label">Total Vocab</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-mastered" style="color: var(--success);">0</div>
+                        <div class="stat-label">Mastered</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-learning" style="color: var(--primary);">0</div>
+                        <div class="stat-label">Learning</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-accuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+
+                <!-- Learning Breakdown Chart -->
+                <div class="card">
+                    <div class="card-title" style="margin-bottom: 16px;">Vocabulary Mastery Breakdown</div>
+                    <div style="margin-bottom: 12px;">
+                        <div style="display: flex; height: 16px; border-radius: var(--radius-full); overflow: hidden; background: var(--border);">
+                            <div id="bar-mastered" style="background: var(--success); width: 0%;" title="Mastered"></div>
+                            <div id="bar-review" style="background: var(--warning); width: 0%;" title="Review"></div>
+                            <div id="bar-learning" style="background: var(--primary); width: 0%;" title="Learning"></div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-around; font-size: 0.85rem; font-weight: 600;">
+                        <span style="color: var(--success);">● Mastered (<span id="count-mastered-lbl">0</span>)</span>
+                        <span style="color: var(--warning);">● Review (<span id="count-review-lbl">0</span>)</span>
+                        <span style="color: var(--primary);">● Learning (<span id="count-learning-lbl">0</span>)</span>
+                        <span style="color: var(--text-muted);">● New (<span id="count-new-lbl">0</span>)</span>
+                    </div>
+                </div>
+
+                <!-- Detailed Stats Card -->
+                <div class="card">
+                    <div class="card-title" style="margin-bottom: 16px;">Learning Analytics</div>
+                    <div class="setting-group">
+                        <span class="setting-label">🔥 Current Streak</span>
+                        <span style="font-weight: 700; color: #f97316;" id="stat-streak">0 days</span>
+                    </div>
+                    <div class="setting-group">
+                        <span class="setting-label">🏆 Longest Streak</span>
+                        <span style="font-weight: 700;" id="stat-longest-streak">0 days</span>
+                    </div>
+                    <div class="setting-group">
+                        <span class="setting-label">🎯 Words Studied Today</span>
+                        <span style="font-weight: 700;" id="stat-words-today">0 words</span>
+                    </div>
+                    <div class="setting-group">
+                        <span class="setting-label">✍️ Total Quiz Answers</span>
+                        <span style="font-weight: 700;" id="stat-total-answers">0</span>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- ==================== 4. SETTINGS SECTION ==================== -->
+            <section id="section-settings" class="app-section">
+                
+                <div class="card">
+                    <div class="card-title" style="margin-bottom: 16px;">App Preferences</div>
+
+                    <!-- Daily Goal -->
+                    <div class="setting-group">
+                        <div>
+                            <div class="setting-label">Daily Goal Target</div>
+                            <div class="setting-desc">Words to review/learn per day</div>
+                        </div>
+                        <select id="setting-daily-goal" class="setting-select" onchange="updateSettings()">
+                            <option value="10">10 words/day</option>
+                            <option value="20" selected>20 words/day</option>
+                            <option value="30">30 words/day</option>
+                            <option value="50">50 words/day</option>
+                        </select>
+                    </div>
+
+                    <!-- Auto Pronunciation -->
+                    <div class="setting-group">
+                        <div>
+                            <div class="setting-label">🔊 Auto Pronunciation</div>
+                            <div class="setting-desc">Automatically pronounce active word</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="setting-auto-pronounce" checked onchange="updateSettings()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Speech Rate -->
+                    <div class="setting-group">
+                        <div>
+                            <div class="setting-label">Pronunciation Speed</div>
+                            <div class="setting-desc">Speech synthesis playback rate</div>
+                        </div>
+                        <select id="setting-speech-rate" class="setting-select" onchange="updateSettings()">
+                            <option value="0.75">0.75x (Slower)</option>
+                            <option value="0.9" selected>0.9x (Default)</option>
+                            <option value="1.0">1.0x (Normal)</option>
+                            <option value="1.1">1.1x (Faster)</option>
+                        </select>
+                    </div>
+
+                    <!-- Sound Effects -->
+                    <div class="setting-group">
+                        <div>
+                            <div class="setting-label">🎵 Sound Effects</div>
+                            <div class="setting-desc">Play audio chimes during exercises</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="setting-sound-fx" checked onchange="updateSettings()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Dark Mode -->
+                    <div class="setting-group">
+                        <div>
+                            <div class="setting-label">🌙 Dark Mode</div>
+                            <div class="setting-desc">Toggle app dark theme interface</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="setting-dark-mode" onchange="updateSettings()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                </div>
+
+                <!-- Danger Zone Card -->
+                <div class="card" style="border-color: var(--danger-light);">
+                    <div class="card-title" style="color: var(--danger); margin-bottom: 12px;">Danger Zone</div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">
+                        Resetting will erase all your learning progress, mastery statistics, mistake history, and daily streaks. This action cannot be undone.
+                    </p>
+                    <button class="btn btn-danger" onclick="confirmResetProgress()">⚠️ Reset All Learning Progress</button>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <!-- First-time Onboarding Modal -->
+    <div class="modal-overlay" id="onboarding-modal">
+        <div class="modal-container">
+            <div style="font-size: 3.5rem; margin-bottom: 12px;">🎓</div>
+            <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 8px;">Welcome to VocabMaster!</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">
+                Master B1-B2 English vocabulary effectively with flashcards, automatic British pronunciation, active recall practice, and spaced repetition.
+            </p>
+            <button class="btn btn-primary btn-lg" onclick="closeOnboarding()">Start Learning Now</button>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        /* ==================== 1. EMBEDDED VOCABULARY DATA ==================== */
+        const RAW_VOCABULARY_DATA = [
+            { word: "academic", ipa: "/ˌækəˈdemɪk/", partOfSpeech: "adj.", definition: "related to studying and learning", vietnamese: "Thuộc về học thuật", example: "Good academic performance opens doors to top universities." },
+            { word: "component", ipa: "/kəmˈpəʊnənt/", partOfSpeech: "n.", definition: "one of the many parts that are in a machine, system, or idea", vietnamese: "Thành phần, bộ phận", example: "Grammar is an essential component of language learning." },
+            { word: "effective", ipa: "/ɪˈfektɪv/", partOfSpeech: "adj.", definition: "something that works well and produces the result that one wants", vietnamese: "Hiệu quả", example: "Flashcards are an effective tool for memorizing vocabulary." },
+            { word: "long-term", ipa: "/ˌlɒŋˈtɜːrm/", partOfSpeech: "adj.", definition: "continuing for a long period of time", vietnamese: "Dài hạn, lâu dài", example: "Regular study produces long-term language benefits." },
+            { word: "make an effort", ipa: "/meɪk ən ˈefərt/", partOfSpeech: "exp.", definition: "to try, to attempt", vietnamese: "Nỗ lực, cố gắng", example: "You should make an effort to speak English every day." },
+            { word: "structure", ipa: "/ˈstrʌktʃər/", partOfSpeech: "n.", definition: "the way things are connected", vietnamese: "Cấu trúc, sự tổ chức", example: "The grammar structure of this sentence is quite clear." },
+            { word: "technique", ipa: "/tekˈniːk/", partOfSpeech: "n.", definition: "a method, a procedure by which something is performed", vietnamese: "Kỹ thuật, phương pháp", example: "Mind mapping is a useful note-taking technique." },
+            { word: "transfer", ipa: "/ˈtrænsfɜːr/", partOfSpeech: "v.", definition: "to move from one place, vehicle, etc., to another", vietnamese: "Chuyển giao, di chuyển", example: "She decided to transfer her files to a USB drive." },
+            { word: "alternative", ipa: "/ɔːlˈtɜːrnətɪv/", partOfSpeech: "adj./n.", definition: "different than what is usual or expected; another option", vietnamese: "Thay thế, sự lựa chọn khác", example: "We need to find an alternative solution to this problem." },
+            { word: "apply", ipa: "/əˈplaɪ/", partOfSpeech: "v.", definition: "to use an idea or skill for a particular purpose", vietnamese: "Áp dụng, nộp đơn", example: "You can apply this rule to improve your writing." },
+            { word: "assess", ipa: "/əˈses/", partOfSpeech: "v.", definition: "to consider something in order to make a judgment", vietnamese: "Đánh giá", example: "Teachers assess student progress through tests and quizzes." },
+            { word: "interact", ipa: "/ˌɪntərˈækt/", partOfSpeech: "v.", definition: "to communicate with someone through conversation, looks, or action", vietnamese: "Tương tác", example: "Students interact with each other during group discussions." },
+            { word: "debate", ipa: "/dɪˈbeɪt/", partOfSpeech: "n.", definition: "a discussion about opinions on a topic", vietnamese: "Cuộc tranh luận", example: "The class held a lively debate on climate change." },
+            { word: "measure", ipa: "/ˈmeʒər/", partOfSpeech: "v.", definition: "to find the size, weight, speed, etc., of something", vietnamese: "Đo lường", example: "Tests are used to measure a student's vocabulary knowledge." },
+            { word: "memorize", ipa: "/ˈmeməraɪz/", partOfSpeech: "v.", definition: "to remember something exactly, to learn something by heart", vietnamese: "Ghi nhớ, học thuộc lòng", example: "Try to memorize ten new English words every day." },
+            { word: "reform", ipa: "/rɪˈfɔːrm/", partOfSpeech: "v.", definition: "to change or improve something, especially government", vietnamese: "Cải cách, đổi mới", example: "The government plans to reform the national education system." },
+            { word: "accommodation", ipa: "/əˌkɒməˈdeɪʃən/", partOfSpeech: "n.", definition: "buildings or rooms where people stay, especially in a hotel", vietnamese: "Chỗ ở, tiện nghi", example: "The hotel provides comfortable accommodation for tourists." },
+            { word: "basic", ipa: "/ˈbeɪsɪk/", partOfSpeech: "adj.", definition: "the simplest and most necessary part of something", vietnamese: "Cơ bản", example: "A good dictionary is a basic requirement for language learning." },
+            { word: "eager", ipa: "/ˈiːɡər/", partOfSpeech: "adj.", definition: "very excited about something that is going to happen soon", vietnamese: "Háo hức, tha thiết", example: "The students were eager to start their holiday trip." },
+            { word: "exhausting", ipa: "/ɪɡˈzɔːstɪŋ/", partOfSpeech: "adj.", definition: "very tiring", vietnamese: "Kiệt sức, làm mệt mỏi", example: "Studying all night before an exam can be exhausting." },
+            { word: "fabulous", ipa: "/ˈfæbjələs/", partOfSpeech: "adj.", definition: "great, wonderful", vietnamese: "Tuyệt vời, tuyệt diệu", example: "She had a fabulous time exploring the old town." },
+            { word: "possession", ipa: "/pəˈzeʃən/", partOfSpeech: "n.", definition: "a piece of property, a belonging", vietnamese: "Tài sản, vật sở hữu", example: "Mobile phones have become a vital personal possession." },
+            { word: "range", ipa: "/reɪndʒ/", partOfSpeech: "n.", definition: "a number of different things of the same kind", vietnamese: "Phạm vi, dãy", example: "The bookstore offers a wide range of learning materials." },
+            { word: "unique", ipa: "/juːˈniːk/", partOfSpeech: "adj.", definition: "one of a kind", vietnamese: "Độc đáo, duy nhất", example: "Every language has its own unique grammar rules." },
+            { word: "assume", ipa: "/əˈsjuːm/", partOfSpeech: "v.", definition: "to think something is true without proof", vietnamese: "Giả định, cho rằng", example: "Do not assume that learning a language is easy." },
+            { word: "authorized", ipa: "/ˈɔːθəraɪzd/", partOfSpeech: "v./adj.", definition: "to give official permission for something", vietnamese: "Được ủy quyền, cho phép", example: "Only authorized staff are allowed inside the room." },
+            { word: "departure", ipa: "/dɪˈpɑːrtʃər/", partOfSpeech: "n.", definition: "a leaving", vietnamese: "Sự khởi hành, chuyến bay đi", example: "We arrived at the airport two hours before departure." },
+            { word: "expire", ipa: "/ɪkˈspaɪər/", partOfSpeech: "v.", definition: "to end or become unusable after a period of time", vietnamese: "Hết hạn", example: "Check your passport to make sure it does not expire soon." },
+            { word: "precaution", ipa: "/prɪˈkɔːʃən/", partOfSpeech: "n.", definition: "a step taken in advance to prevent harm", vietnamese: "Biện pháp phòng ngừa", example: "Wearing a helmet is a necessary safety precaution." },
+            { word: "purchase", ipa: "/ˈpɜːrtʃəs/", partOfSpeech: "v.", definition: "to buy something", vietnamese: "Mua sắm", example: "You can purchase online courses using a credit card." },
+            { word: "sincere", ipa: "/sɪnˈsɪər/", partOfSpeech: "adj.", definition: "honest in one’s thought and action, true", vietnamese: "Chân thành", example: "He offered a sincere apology for his mistake." },
+            { word: "vulnerable", ipa: "/ˈvʌlnərəbəl/", partOfSpeech: "adj.", definition: "describing a person who is easily harmed, hurt, or attacked", vietnamese: "Dễ bị tổn thương", example: "Elderly people are more vulnerable to winter illnesses." },
+            { word: "credits", ipa: "/ˈkredɪts/", partOfSpeech: "n.", definition: "a list of people who made a movie, etc.", vietnamese: "Danh sách thực hiện", example: "Stayed until the end of the movie to read the credits." },
+            { word: "crucial", ipa: "/ˈkruːʃəl/", partOfSpeech: "adj.", definition: "very important", vietnamese: "Cực kỳ quan trọng", example: "Practice is a crucial factor in achieving language fluency." },
+            { word: "director", ipa: "/dəˈrektər/", partOfSpeech: "n.", definition: "the person who decides how something appears on stage or on screen", vietnamese: "Đạo diễn, giám đốc", example: "The film director instructed the actors before the scene." },
+            { word: "exclusive", ipa: "/ɪkˈskluːsɪv/", partOfSpeech: "adj.", definition: "only involving the thing(s) mentioned", vietnamese: "Độc quyền, riêng biệt", example: "The magazine published an exclusive interview with the singer." },
+            { word: "production", ipa: "/prəˈdʌkʃən/", partOfSpeech: "n.", definition: "the making of a movie", vietnamese: "Sự sản xuất, tác phẩm", example: "The film production took over two years to complete." },
+            { word: "scene", ipa: "/siːn/", partOfSpeech: "n.", definition: "one part of a movie", vietnamese: "Cảnh phim", example: "The closing scene of the movie was deeply emotional." },
+            { word: "studio", ipa: "/ˈstuːdiəʊ/", partOfSpeech: "n.", definition: "a place where an artist works", vietnamese: "Phòng thu, xưởng phim", example: "The music studio was equipped with modern recording tools." },
+            { word: "transform", ipa: "/trænsˈfɔːrm/", partOfSpeech: "v.", definition: "to change completely", vietnamese: "Biến đổi, thay đổi hoàn toàn", example: "Technology can transform the way we learn languages." },
+            { word: "ambition", ipa: "/æmˈbɪʃən/", partOfSpeech: "n.", definition: "a strong desire to achieve something", vietnamese: "Hoài bão, tham vọng", example: "Her ambition is to become a successful foreign correspondent." },
+            { word: "debut", ipa: "/ˈdeɪbjuː/", partOfSpeech: "n.", definition: "the first public performance or appearance", vietnamese: "Sự ra mắt, trình diễn đầu tiên", example: "The young musician made her debut at the opera house." },
+            { word: "influential", ipa: "/ˌɪnfluˈenʃəl/", partOfSpeech: "adj.", definition: "having the power to change people’s thinking", vietnamese: "Có ảnh hưởng lớn", example: "He is an influential writer in modern English literature." },
+            { word: "inspiration", ipa: "/ˌɪnspəˈreɪʃən/", partOfSpeech: "n.", definition: "getting a good idea of what to do", vietnamese: "Cảm hứng", example: "Nature is a great source of inspiration for poets." },
+            { word: "metaphor", ipa: "/ˈmetəfɔːr/", partOfSpeech: "n.", definition: "describes something by referring to it as something else", vietnamese: "Phép ẩn dụ", example: "\"Time is money\" is a well-known metaphor." },
+            { word: "passion", ipa: "/ˈpæʃən/", partOfSpeech: "n.", definition: "a very strong feeling or belief", vietnamese: "Niềm đam mê", example: "She has a passion for teaching English to young children." },
+            { word: "preserve", ipa: "/prɪˈzɜːrv/", partOfSpeech: "v.", definition: "to save something or someone from being harmed or destroyed", vietnamese: "Bảo tồn, giữ gìn", example: "Museums help preserve historical cultural items." },
+            { word: "represent", ipa: "/ˌreprɪˈzent/", partOfSpeech: "v.", definition: "to be or have the same meaning as something else", vietnamese: "Đại diện, tượng trưng", example: "The national flag represents the unity of the nation." },
+            { word: "achievement", ipa: "/əˈtʃiːvmənt/", partOfSpeech: "n.", definition: "something important and difficult that is done", vietnamese: "Thành tựu, kết quả đạt được", example: "Passing the English B2 exam was a major achievement." },
+            { word: "aspire", ipa: "/əˈspaɪər/", partOfSpeech: "v.", definition: "to desire and work toward achieving something", vietnamese: "Khát khao, mong mỏi", example: "Many students aspire to study abroad at top universities." },
+            { word: "exotic", ipa: "/ɪɡˈzɒtɪk/", partOfSpeech: "adj.", definition: "unusual or interesting, usually foreign", vietnamese: "Ngoại nhập, kỳ lạ", example: "They love visiting markets filled with exotic tropical fruits." },
+            { word: "feat", ipa: "/fiːt/", partOfSpeech: "n.", definition: "an impressive achievement", vietnamese: "Kỳ tích, ngón đòn ngoạn mục", example: "Climbing Mount Everest is an extraordinary physical feat." },
+            { word: "goal", ipa: "/ɡəʊl/", partOfSpeech: "n.", definition: "something you want to do in the future", vietnamese: "Mục tiêu", example: "Setting a daily study goal helps maintain consistent progress." },
+            { word: "record", ipa: "/ˈrekərd/", partOfSpeech: "n.", definition: "the best time, distance, etc., in an athletic event", vietnamese: "Kỷ kỷ lục, hồ sơ", example: "The athlete set a new world record in the 100m sprint." },
+            { word: "talent", ipa: "/ˈtælənt/", partOfSpeech: "n.", definition: "being able to do something very well without practice", vietnamese: "Tài năng, năng khiếu", example: "He showed an exceptional natural talent for drawing." },
+            { word: "verify", ipa: "/ˈverɪfaɪ/", partOfSpeech: "v.", definition: "to say that something is true", vietnamese: "Xác minh, kiểm tra", example: "Please verify your email address to complete registration." },
+            { word: "aggressive", ipa: "/əˈɡresɪv/", partOfSpeech: "adj.", definition: "acting as if you want to fight or attack someone", vietnamese: "Hung hăng, hăng hái", example: "An aggressive approach to studying can build speed." },
+            { word: "amateur", ipa: "/ˈæmətʃʊər/", partOfSpeech: "n.", definition: "someone who is still learning, not a professional", vietnamese: "Nghiệp dư", example: "The tennis tournament was open to amateur players." },
+            { word: "coach", ipa: "/kəʊtʃ/", partOfSpeech: "n.", definition: "a person who teaches, especially a sports team", vietnamese: "Huấn luyện viên", example: "The team coach prepared a new strategy for the game." },
+            { word: "enthusiastic", ipa: "/ɪnˌθuːziˈæstɪk/", partOfSpeech: "adj.", definition: "very excited", vietnamese: "Nhiệt tình, hăng hái", example: "The teacher received an enthusiastic response from students." },
+            { word: "professional", ipa: "/prəˈfeʃənəl/", partOfSpeech: "adj.", definition: "related to a profession or a person who makes a living", vietnamese: "Chuyên nghiệp", example: "She maintained a high level of professional conduct." },
+            { word: "role model", ipa: "/ˈrəʊl ˌmɒdl/", partOfSpeech: "n.", definition: "a person who people admire and want to act like", vietnamese: "Hình mẫu lý tưởng", example: "Hardworking teachers serve as a great role model for children." },
+            { word: "sense of humor", ipa: "/ˌsens əv ˈhjuːmər/", partOfSpeech: "phr.", definition: "the ability to understand and laugh at funny things", vietnamese: "Khiếu hài hước", example: "A good sense of humor makes learning much more enjoyable." },
+            { word: "tournament", ipa: "/ˈtʊərnəmənt/", partOfSpeech: "n.", definition: "a competition with a series of games", vietnamese: "Giải đấu, vòng thi đấu", example: "Over fifty players registered for the chess tournament." },
+            { word: "breathe", ipa: "/briːð/", partOfSpeech: "v.", definition: "to take air into your lungs and send it out again", vietnamese: "Hít thở", example: "Take a deep breath to relax before your spoken English test." },
+            { word: "complex", ipa: "/ˈkɒmpleks/", partOfSpeech: "adj.", definition: "difficult, with many parts or pieces", vietnamese: "Phức tạp", example: "English grammar has some complex tense structures." },
+            { word: "consist of", ipa: "/kənˈsɪst əv/", partOfSpeech: "v.", definition: "to have or to depend on something", vietnamese: "Bao gồm", example: "The exam will consist of reading, writing, and listening." },
+            { word: "illness", ipa: "/ˈɪlnəs/", partOfSpeech: "n.", definition: "being sick or unwell", vietnamese: "Bệnh tật, sự ốm đau", example: "Rest is essential when recovering from a severe illness." },
+            { word: "injury", ipa: "/ˈɪndʒəri/", partOfSpeech: "n.", definition: "to hurt your body", vietnamese: "Chấn thương, vết thương", example: "The player had to leave the field due to a leg injury." },
+            { word: "suffer", ipa: "/ˈsʌfər/", partOfSpeech: "v.", definition: "to have an unpleasant or difficult experience", vietnamese: "Chịu đựng, gánh chịu", example: "Many people suffer from stage fright when speaking in public." },
+            { word: "surgery", ipa: "/ˈsɜːrdʒəri/", partOfSpeech: "n.", definition: "medical treatment when a doctor cuts open the body", vietnamese: "Phẫu thuật", example: "The doctor advised immediate surgery to treat the condition." },
+            { word: "treatment", ipa: "/ˈtriːtmənt/", partOfSpeech: "n.", definition: "a method to make something unwell better", vietnamese: "Sự điều trị, liệu trình", example: "Early medical treatment is key to a quick recovery." },
+            { word: "blind", ipa: "/blaɪnd/", partOfSpeech: "adj.", definition: "to not be able to see", vietnamese: "Mù, không nhìn thấy", example: "Guide dogs assist people who are blind or visually impaired." },
+            { word: "bounce", ipa: "/baʊns/", partOfSpeech: "v.", definition: "to move away from a surface after hitting it", vietnamese: "Tâng, nảy", example: "Rubber balls bounce easily off hard ground surfaces." },
+            { word: "capable", ipa: "/ˈkeɪpəbəl/", partOfSpeech: "adj.", definition: "having the qualities or abilities needed", vietnamese: "Có khả năng, năng lực", example: "She is fully capable of managing complex academic tasks." },
+            { word: "overcome", ipa: "/ˌəʊvərˈkʌm/", partOfSpeech: "v.", definition: "to control a feeling or problem", vietnamese: "Vượt qua", example: "Daily practice helps students overcome their fear of speaking." },
+            { word: "phenomenon", ipa: "/fɪˈnɒmɪnən/", partOfSpeech: "n.", definition: "an event or situation that cannot be explained", vietnamese: "Hiện tượng", example: "Northern lights are a spectacular natural phenomenon." },
+            { word: "refine", ipa: "/rɪˈfaɪn/", partOfSpeech: "v.", definition: "to make something better by making small changes", vietnamese: "Trau dồi, tinh chỉnh", example: "You can refine your essay by checking spelling and grammar." },
+            { word: "sensitive", ipa: "/ˈsensɪtɪv/", partOfSpeech: "adj.", definition: "reacting easily to very small changes", vietnamese: "Nhạy cảm, tinh tế", example: "Sensitive ears can pick up subtle changes in pronunciation." },
+            { word: "sight", ipa: "/saɪt/", partOfSpeech: "n.", definition: "the ability to see", vietnamese: "Thị lực, tầm nhìn", example: "Regular eye checks help maintain good physical sight." },
+            { word: "decorate", ipa: "/ˈdekəreɪt/", partOfSpeech: "v.", definition: "to beautify, to make festive", vietnamese: "Trang trí", example: "Students decorate their classroom before the holidays." },
+            { word: "display", ipa: "/dɪˈspleɪ/", partOfSpeech: "v.", definition: "to place in a position to be seen", vietnamese: "Trưng bày, hiển thị", example: "The museum will display famous historical artifacts." },
+            { word: "precious", ipa: "/ˈpreʃəs/", partOfSpeech: "adj.", definition: "extremely valuable; that should not be wasted", vietnamese: "Quý giá, quý báu", example: "Time is a precious resource that should be used wisely." },
+            { word: "define", ipa: "/dɪˈfaɪn/", partOfSpeech: "v.", definition: "to explain something, to give the meaning", vietnamese: "Định nghĩa", example: "Dictionaries help us define unfamiliar vocabulary words." },
+            { word: "supplies", ipa: "/səˈplaɪz/", partOfSpeech: "n.", definition: "a quantity of goods of a specific kind necessary for an operation", vietnamese: "Nhu yếu phẩm, vật tư", example: "The office ran out of basic paper supplies." },
+            { word: "throw away", ipa: "/θrəʊ əˈweɪ/", partOfSpeech: "v.", definition: "to discard, to get rid of", vietnamese: "Ném đi, vứt bỏ", example: "Don't throw away useful plastic containers." },
+            { word: "universal", ipa: "/ˌjuːnɪˈvɜːrsəl/", partOfSpeech: "adj.", definition: "found or practiced everywhere", vietnamese: "Phổ quát, toàn cầu", example: "Music is often described as a universal language." },
+            { word: "approximately", ipa: "/əˈprɒksɪmətli/", partOfSpeech: "adv.", definition: "estimated, about", vietnamese: "Khoảng, xấp xỉ", example: "The journey takes approximately forty-five minutes." },
+            { word: "convert", ipa: "/kənˈvɜːrt/", partOfSpeech: "v.", definition: "to change from one form to another", vietnamese: "Chuyển đổi", example: "You can convert foreign currency at the airport bank." },
+            { word: "detail", ipa: "/ˈdiːteɪl/", partOfSpeech: "n.", definition: "a small point", vietnamese: "Chi tiết", example: "Pay close attention to every detail when reading instructions." },
+            { word: "isolated", ipa: "/ˈaɪsəleɪtɪd/", partOfSpeech: "adj.", definition: "to make alone or to be far away from others", vietnamese: "Cô lập, biệt lập", example: "The mountain village remained isolated during winter." },
+            { word: "loyal", ipa: "/ˈlɔɪəl/", partOfSpeech: "adj.", definition: "following and supporting a friend or organization", vietnamese: "Trung thành", example: "Loyal customers often receive special discounts." },
+            { word: "persuade", ipa: "/pərˈsweɪd/", partOfSpeech: "v.", definition: "to lead a person or group to believe or do something", vietnamese: "Thuyết phục", example: "She managed to persuade her friend to join the study group." },
+            { word: "response", ipa: "/rɪˈspɒns/", partOfSpeech: "n.", definition: "a reaction to something done beforehand", vietnamese: "Phản hồi, sự đáp lại", example: "The teacher gave a helpful response to my question." },
+            { word: "switch", ipa: "/swɪtʃ/", partOfSpeech: "v.", definition: "to change quickly and completely", vietnamese: "Chuyển đổi", example: "You can switch between light and dark mode in settings." },
+            { word: "appealing", ipa: "/əˈpiːlɪŋ/", partOfSpeech: "adj.", definition: "interesting or attractive", vietnamese: "Hấp dẫn, lôi cuốn", example: "Interactive vocabulary apps make learning more appealing." },
+            { word: "capture", ipa: "/ˈkæptʃər/", partOfSpeech: "v.", definition: "to film or record for the purpose of preserving", vietnamese: "Ghi lại, bắt lấy", example: "Photographers capture memorable moments at events." },
+            { word: "extinct", ipa: "/ɪkˈstɪŋkt/", partOfSpeech: "adj.", definition: "something that has ended or died out", vietnamese: "Tuyệt chủng", example: "Dinosaurs became extinct millions of years ago." },
+            { word: "format", ipa: "/ˈfɔːrmæt/", partOfSpeech: "n.", definition: "the way in which something is presented", vietnamese: "Định dạng, hình thức", example: "Digital flashcards are a convenient learning format." },
+            { word: "genre", ipa: "/ˈʒɒnrə/", partOfSpeech: "n.", definition: "type or style of music, art, or literature", vietnamese: "Thể loại", example: "Mystery is my favorite genre of fiction books." },
+            { word: "lyrics", ipa: "/ˈlɪrɪks/", partOfSpeech: "n.", definition: "the words of a song", vietnamese: "Lời bài hát", example: "Reading song lyrics helps improve listening skills." },
+            { word: "roots", ipa: "/ruːts/", partOfSpeech: "n.", definition: "the place or culture that something or someone comes from", vietnamese: "Cội nguồn, gốc rễ", example: "She traveled back home to explore her cultural roots." },
+            { word: "essential", ipa: "/ɪˈsenʃəl/", partOfSpeech: "adj.", definition: "necessary, very important", vietnamese: "Thiết yếu, cần thiết", example: "Consistency is essential for learning any new vocabulary." },
+            { word: "album", ipa: "/ˈælbəm/", partOfSpeech: "n.", definition: "a collection of music put on a record or CD", vietnamese: "Album nhạc", example: "The band released a new studio album this month." },
+            { word: "boundary", ipa: "/ˈbaʊndəri/", partOfSpeech: "n.", definition: "a real or imaginary line that makes the edge", vietnamese: "Ranh giới, biên giới", example: "Rivers often form a natural boundary between countries." },
+            { word: "incorporate", ipa: "/ɪnˈkɔːrpəreɪt/", partOfSpeech: "v.", definition: "to include things into a group", vietnamese: "Kết hợp, sáp nhập", example: "Try to incorporate new words into your daily writing." },
+            { word: "mature", ipa: "/məˈtʃʊər/", partOfSpeech: "adj.", definition: "becoming older and wiser", vietnamese: "Trưởng thành", example: "Older students often show a mature attitude toward studies." },
+            { word: "pioneer", ipa: "/ˌpaɪəˈnɪər/", partOfSpeech: "n.", definition: "the first person to do something or work on something", vietnamese: "Người tiên phong", example: "Ada Lovelace was a pioneer in computer science." },
+            { word: "release", ipa: "/rɪˈliːs/", partOfSpeech: "v.", definition: "to publish a book, DVD, or CD", vietnamese: "Phát hành, ra mắt", example: "The author plans to release a new vocabulary guide." },
+            { word: "revolution", ipa: "/ˌrevəˈluːʃən/", partOfSpeech: "n.", definition: "a complete change in thinking or methods", vietnamese: "Cuộc cách mạng", example: "Online learning created a revolution in modern education." },
+            { word: "statement", ipa: "/ˈsteɪtmənt/", partOfSpeech: "n.", definition: "something written or said that tells an opinion", vietnamese: "Tuyên bố, phát biểu", example: "Make sure every statement in your paper is supported by evidence." },
+            { word: "campus", ipa: "/ˈkæmpəs/", partOfSpeech: "n.", definition: "the land and buildings of a university or college", vietnamese: "Khuôn viên trường", example: "The university campus has a beautiful central library." },
+            { word: "concept", ipa: "/ˈkɒnsept/", partOfSpeech: "n.", definition: "an idea about how something is or should be done", vietnamese: "Khái niệm, ý tưởng", example: "Spaced repetition is an effective learning concept." },
+            { word: "enterprising", ipa: "/ˈentərpraɪzɪŋ/", partOfSpeech: "adj.", definition: "able to make money from new, interesting ideas", vietnamese: "Dám nghĩ dám làm, năng động", example: "Enterprising students often start small campus projects." },
+            { word: "expand", ipa: "/ɪkˈspænd/", partOfSpeech: "v.", definition: "to get bigger", vietnamese: "Mở rộng", example: "Reading English books will help expand your vocabulary." },
+            { word: "retail", ipa: "/ˈriːteɪl/", partOfSpeech: "n.", definition: "concerning the sale of things to people in stores", vietnamese: "Bán lẻ", example: "Online shopping changed the retail industry forever." },
+            { word: "spur", ipa: "/spɜːr/", partOfSpeech: "v.", definition: "motivate, inspire", vietnamese: "Khuyến khích, thúc đẩy", example: "High test scores spur students to study even harder." },
+            { word: "stationery", ipa: "/ˈsteɪʃənəri/", partOfSpeech: "n.", definition: "products used for writing letters and notes", vietnamese: "Văn phòng phẩm", example: "Notebooks, pens, and paper clips are common stationery items." },
+            { word: "resource", ipa: "/rɪˈsɔːrs/", partOfSpeech: "n.", definition: "money, skills, or time that is available when needed", vietnamese: "Tài nguyên, nguồn lực", example: "A dictionary is a valuable resource for language learners." },
+            { word: "fundamental", ipa: "/ˌfʌndəˈmentl/", partOfSpeech: "adj.", definition: "most important and necessary part of something", vietnamese: "Cơ bản, cốt lõi", example: "Pronunciation is a fundamental part of spoken English." },
+            { word: "inclined to", ipa: "/ɪnˈklaɪnd tuː/", partOfSpeech: "phr.", definition: "to believe something is likely to be correct", vietnamese: "Có khuynh hướng, thiên về", example: "People are inclined to remember visual content better." },
+            { word: "investigate", ipa: "/ɪnˈvestɪɡeɪt/", partOfSpeech: "v.", definition: "to try to find the truth or cause", vietnamese: "Điều tra, nghiên cứu", example: "Scientists continue to investigate how memory works." },
+            { word: "opinion", ipa: "/əˈpɪnjən/", partOfSpeech: "n.", definition: "a personal belief that is not factual", vietnamese: "Ý kiến, quan điểm", example: "Respecting every person's opinion is essential in debates." },
+            { word: "persuasive", ipa: "/pərˈsweɪsɪv/", partOfSpeech: "adj.", definition: "to make other people believe something", vietnamese: "Có tính thuyết phục", example: "Strong logical arguments make an essay persuasive." },
+            { word: "regulation", ipa: "/ˌreɡjʊˈleɪʃən/", partOfSpeech: "n.", definition: "official rule", vietnamese: "Quy định, quy tắc", example: "Always follow safety regulations inside the laboratory." },
+            { word: "theory", ipa: "/ˈθɪəri/", partOfSpeech: "n.", definition: "an idea that explains why something happens", vietnamese: "Lý thuyết", example: "The theory of evolution changed biological science." },
+            { word: "thrive", ipa: "/θraɪv/", partOfSpeech: "v.", definition: "to do exceptionally well", vietnamese: "Phát triển mạnh, thịnh vượng", example: "Plants thrive in sunny, well-watered soil environments." },
+            { word: "consume", ipa: "/kənˈsjuːm/", partOfSpeech: "v.", definition: "to eat and drink", vietnamese: "Tiêu thụ, ăn uống", example: "Try to consume healthy foods rich in essential vitamins." },
+            { word: "culinary", ipa: "/ˈkʌlɪnəri/", partOfSpeech: "adj.", definition: "related to food", vietnamese: "Thuộc về ẩm thực", example: "Vietnam is famous worldwide for its culinary heritage." },
+            { word: "cure", ipa: "/kjʊər/", partOfSpeech: "v.", definition: "to fix an illness completely", vietnamese: "Chữa khỏi", example: "Scientists are searching for a cure for the disease." },
+            { word: "enhance", ipa: "/ɪnˈhɑːns/", partOfSpeech: "v.", definition: "to make more attractive or improved", vietnamese: "Nâng cao, tăng cường", example: "Regular reading helps enhance your vocabulary range." },
+            { word: "equipment", ipa: "/ɪˈkwɪpmənt/", partOfSpeech: "n.", definition: "the tools and other things needed to do a job", vietnamese: "Thiết bị, dụng cụ", example: "High quality sports equipment ensures safety during play." },
+            { word: "evolve", ipa: "/ɪˈvɒlv/", partOfSpeech: "v.", definition: "to change for the better", vietnamese: "Tiến hóa, phát triển", example: "Languages continue to evolve over generations." },
+            { word: "extract", ipa: "/ɪkˈstrækt/", partOfSpeech: "v.", definition: "to take out", vietnamese: "Chiết xuất, rút ra", example: "Doctors extract useful data from medical research tests." },
+            { word: "resemble", ipa: "/rɪˈzembəl/", partOfSpeech: "v.", definition: "to look like", vietnamese: "Giống với", example: "The twin brothers closely resemble each other." },
+            { word: "crave", ipa: "/kreɪv/", partOfSpeech: "v.", definition: "to want something very much", vietnamese: "Thèm muốn, khao khát", example: "After a long workout, people often crave cool water." },
+            { word: "decay", ipa: "/dɪˈkeɪ/", partOfSpeech: "v.", definition: "to slowly become destroyed", vietnamese: "Phân hủy, suy tàn", example: "Teeth can decay if you eat too much sugar without brushing." },
+            { word: "distinctive", ipa: "/dɪˈstɪŋktɪv/", partOfSpeech: "adj.", definition: "different from others, special", vietnamese: "Đặc biệt, có nét riêng", example: "The product has a distinctive design that stands out." },
+            { word: "moderation", ipa: "/ˌmɒdəˈreɪʃən/", partOfSpeech: "n.", definition: "in healthy or reasonable amounts", vietnamese: "Sự điều độ, vừa phải", example: "Enjoy sweet foods in moderation to stay healthy." },
+            { word: "nature", ipa: "/ˈneɪtʃər/", partOfSpeech: "n.", definition: "the basic character or quality of something", vietnamese: "Bản chất, thiên nhiên", example: "It is in human nature to seek social connections." },
+            { word: "nutritional", ipa: "/njuːˈtrɪʃənəl/", partOfSpeech: "adj.", definition: "related to vitamins, minerals, etc. in food", vietnamese: "Thuộc về dinh dưỡng", example: "Fresh vegetables have high nutritional value." },
+            { word: "stimulate", ipa: "/ˈstɪmjʊleɪt/", partOfSpeech: "v.", definition: "to increase energy or activity", vietnamese: "Kích thích, khơi dậy", example: "Puzzles help stimulate brain function and logical thinking." },
+            { word: "undergo", ipa: "/ˌʌndərˈɡəʊ/", partOfSpeech: "v.", definition: "to experience something", vietnamese: "Trải qua", example: "Trainees undergo intensive practice before taking exams." },
+            { word: "access", ipa: "/ˈækses/", partOfSpeech: "v.", definition: "the right to enter a place or use a thing", vietnamese: "Truy cập, tiếp cận", example: "Students can access online learning resources anytime." },
+            { word: "content", ipa: "/ˈkɒntent/", partOfSpeech: "n.", definition: "information", vietnamese: "Nội dung", example: "High quality educational content helps learners stay engaged." },
+            { word: "ignore", ipa: "/ɪɡˈnɔːr/", partOfSpeech: "v.", definition: "to not pay attention to something on purpose", vietnamese: "Bỏ qua, lờ đi", example: "Do not ignore grammar feedback from your teachers." },
+            { word: "interactive", ipa: "/ˌɪntərˈæktɪv/", partOfSpeech: "adj.", definition: "something that responds to a user’s actions", vietnamese: "Tương tác", example: "Interactive quizzes make learning English fun and dynamic." },
+            { word: "prominently", ipa: "/ˈprɒmɪnəntli/", partOfSpeech: "adv.", definition: "in an important way, easily seen", vietnamese: "Nổi bật, dễ thấy", example: "Important safety notices are prominently displayed." },
+            { word: "subtle", ipa: "/ˈsʌtl/", partOfSpeech: "adj.", definition: "not easy to notice", vietnamese: "Tế nhị, vi tế, không lộ liễu", example: "There is a subtle difference between these two English words." },
+            { word: "visible", ipa: "/ˈvɪzəbəl/", partOfSpeech: "adj.", definition: "something that can be seen", vietnamese: "Có thể nhìn thấy", example: "Clear improvement is visible after three weeks of study." },
+            { word: "virtually", ipa: "/ˈvɜːtʃuəli/", partOfSpeech: "adv.", definition: "almost, practically", vietnamese: "Hầu như, thấu hiểu", example: "It is virtually impossible to learn a language overnight." },
+            { word: "consumer", ipa: "/kənˈsjuːmər/", partOfSpeech: "n.", definition: "someone who uses a product", vietnamese: "Người tiêu dùng", example: "Smart consumers check product reviews before purchasing." },
+            { word: "flatter", ipa: "/ˈflætər/", partOfSpeech: "v.", definition: "to say something to make someone look or feel good", vietnamese: "Nịnh hót, làm cho tôn vẻ đẹp", example: "Dark colors often flatter your appearance." },
+            { word: "insensitive", ipa: "/ɪnˈsensətɪv/", partOfSpeech: "adj.", definition: "not noticing or caring about another's feelings", vietnamese: "Vô cảm, không tinh tế", example: "Making fun of mistakes is insensitive and harmful." },
+            { word: "make fun of", ipa: "/meɪk fʌn əv/", partOfSpeech: "exp.", definition: "to say something that hurts or upsets someone", vietnamese: "Chế giễu, trêu chọc", example: "Never make fun of someone who is trying to speak English." },
+            { word: "publicity", ipa: "/pʌˈblɪsəti/", partOfSpeech: "n.", definition: "news to make a product or event popular", vietnamese: "Sự công khai, quảng bá", example: "The project received a lot of positive publicity." },
+            { word: "slogan", ipa: "/ˈsləʊɡən/", partOfSpeech: "n.", definition: "a saying or phrase that expresses a main message", vietnamese: "Khẩu hiệu", example: "\"Just Do It\" is a famous global brand slogan." },
+            { word: "submit", ipa: "/səbˈmɪt/", partOfSpeech: "v.", definition: "to give to somebody for their approval", vietnamese: "Nộp, trình lên", example: "Students must submit their essays before Friday midnight." },
+            { word: "supply", ipa: "/səˈplaɪ/", partOfSpeech: "v.", definition: "to provide something that is wanted or needed", vietnamese: "Cung cấp", example: "The library will supply free study books to students." },
+            { word: "anticipate", ipa: "/ænˈtɪsɪpeɪt/", partOfSpeech: "v.", definition: "to expect something to happen and be ready", vietnamese: "Dự đoán, lường trước", example: "Good drivers anticipate potential hazards on the road." },
+            { word: "chemical", ipa: "/ˈkemɪkəl/", partOfSpeech: "n.", definition: "a substance in chemistry", vietnamese: "Hóa chất", example: "Never touch an unknown chemical without wearing gloves." },
+            { word: "clean", ipa: "/kliːn/", partOfSpeech: "v.", definition: "to clean with strong chemicals", vietnamese: "Làm sạch, vệ sinh", example: "Remember to clean the counter after preparing raw food." },
+            { word: "consequence", ipa: "/ˈkɒnsɪkwəns/", partOfSpeech: "n.", definition: "something that happens as a result of an action", vietnamese: "Hậu quả, kết quả", example: "Poor sleep is a direct consequence of staying up late." },
+            { word: "struggle", ipa: "/ˈstrʌɡəl/", partOfSpeech: "v.", definition: "to deal with something with great difficulty", vietnamese: "Đấu tranh, vật lộn", example: "Many beginners struggle with English pronunciation at first." },
+            { word: "devastating", ipa: "/ˈdevəsteɪtɪŋ/", partOfSpeech: "adj.", definition: "something badly damaging", vietnamese: "Tàn phá, tàn khốc", example: "The storm caused devastating damage to coastal villages." },
+            { word: "keen", ipa: "/kiːn/", partOfSpeech: "adj.", definition: "interested in", vietnamese: "Hào hứng, đam mê", example: "She is keen on learning foreign languages and cultures." },
+            { word: "account for", ipa: "/əˈkaʊnt fɔːr/", partOfSpeech: "phr.", definition: "to form an amount or part of something", vietnamese: "Chiếm tỉ lệ, giải thích cho", example: "Renewable energy accounts for thirty percent of total power." },
+            { word: "adopt", ipa: "/əˈdɒpt/", partOfSpeech: "v.", definition: "to start to use a particular style or behavior", vietnamese: "Áp dụng, nhận làm con nuôi", example: "The school decided to adopt a digital learning system." },
+            { word: "deprive", ipa: "/dɪˈpraɪv/", partOfSpeech: "v.", definition: "to stop something from happening or being used", vietnamese: "Tước đoạt, lấy đi", example: "Staying up late will deprive your brain of needed rest." },
+            { word: "estimated", ipa: "/ˈestɪmeɪtɪd/", partOfSpeech: "adj.", definition: "approximate, about", vietnamese: "Ước tính", example: "The estimated study time for this lesson is twenty minutes." },
+            { word: "ethical", ipa: "/ˈeθɪkəl/", partOfSpeech: "adj.", definition: "the idea of what is right and wrong", vietnamese: "Thuộc về đạo đức", example: "Scientists must follow strict ethical standards in research." },
+            { word: "impact", ipa: "/ˈɪmpækt/", partOfSpeech: "n.", definition: "an effect that is large or important", vietnamese: "Tác động, ảnh hưởng", example: "Daily practice has a big impact on vocabulary growth." },
+            { word: "modify", ipa: "/ˈmɒdɪfaɪ/", partOfSpeech: "v.", definition: "to change or alter partially", vietnamese: "Sửa đổi, điều chỉnh", example: "You can modify the settings to suit your study pace." },
+            { word: "vital", ipa: "/ˈvaɪtəl/", partOfSpeech: "adj.", definition: "very important or necessary", vietnamese: "Thiết yếu, quan trọng", example: "Water is vital for human health and daily survival." },
+            { word: "alarming", ipa: "/ˈalɑːrmɪŋ/", partOfSpeech: "adj.", definition: "making someone feel worried or scared", vietnamese: "Đáng báo động, lo ngại", example: "The rapid rise in global temperatures is alarming." },
+            { word: "accumulate", ipa: "/əˈkjuːmjʊleɪt/", partOfSpeech: "v.", definition: "to gradually become more and more", vietnamese: "Tích lũy", example: "You will accumulate a large vocabulary over time." },
+            { word: "ambitious", ipa: "/æmˈbɪʃəs/", partOfSpeech: "adj.", definition: "large-scale, needing a lot of work to succeed", vietnamese: "Tham vọng, nhiều hứa hẹn", example: "She set an ambitious goal to learn 1000 words this year." },
+            { word: "launch", ipa: "/lɔːntʃ/", partOfSpeech: "v.", definition: "to start something big and important", vietnamese: "Khởi chạy, ra mắt", example: "The company plans to launch a new learning app next month." },
+            { word: "persistence", ipa: "/pərˈsɪstəns/", partOfSpeech: "n.", definition: "determination to do something difficult", vietnamese: "Sự kiên trì, bền bỉ", example: "Success in learning requires patience and persistence." },
+            { word: "unite", ipa: "/juːˈnaɪt/", partOfSpeech: "v.", definition: "to come together or form a group", vietnamese: "Đoàn kết, hợp nhất", example: "Common learning goals unite students from different countries." },
+            { word: "volunteer", ipa: "/ˌvɒlənˈtɪər/", partOfSpeech: "v.", definition: "to agree to do something of one's free will", vietnamese: "Tình nguyện", example: "Students often volunteer to help organize campus events." },
+            { word: "waste", ipa: "/weɪst/", partOfSpeech: "n.", definition: "unwanted or worthless materials", vietnamese: "Rác thải, sự lãng phí", example: "Recycling helps reduce household plastic waste." },
+            { word: "availability", ipa: "/əˌveɪləˈbɪləti/", partOfSpeech: "n.", definition: "being easily found and used", vietnamese: "Tình trạng sẵn có", example: "Check the availability of study rooms before arriving." },
+            { word: "drastically", ipa: "/ˈdræstɪkli/", partOfSpeech: "adv.", definition: "extreme and sudden", vietnamese: "Sâu sắc, mạnh mẽ", example: "Technology has drastically changed language education." },
+            { word: "endangered", ipa: "/ɪnˈdeɪndʒərd/", partOfSpeech: "adj.", definition: "putting someone or something in danger", vietnamese: "Bị đe dọa, nguy cấp", example: "Many species are endangered due to habitat destruction." },
+            { word: "exceed", ipa: "/ɪkˈsiːd/", partOfSpeech: "v.", definition: "to be more than expected", vietnamese: "Vượt quá", example: "Your test results may exceed your initial expectations." },
+            { word: "lack", ipa: "/læk/", partOfSpeech: "n.", definition: "when there is not enough of something", vietnamese: "Sự thiếu hụt", example: "A lack of practice can slow down your speaking progress." },
+            { word: "shortage", ipa: "/ˈʃɔːrtɪdʒ/", partOfSpeech: "n.", definition: "a state of not having enough", vietnamese: "Sự thiếu hụt, khan hiếm", example: "Drought caused a serious shortage of clean water." },
+            { word: "strain", ipa: "/streɪn/", partOfSpeech: "n.", definition: "worry caused by working too much", vietnamese: "Áp lực, căng thẳng", example: "Studying without breaks puts unnecessary strain on your mind." },
+            { word: "sustain", ipa: "/səˈsteɪn/", partOfSpeech: "v.", definition: "to be used at a level that won't damage", vietnamese: "Duy trì, chống đỡ", example: "Healthy habits sustain your energy throughout the day." }
+        ];
+
+        /* ==================== 2. STATE MANAGEMENT & LOCALSTORAGE ==================== */
+        const APP_STORAGE_KEY = "vocabMaster_appState_v2";
+
+        // Global Deduplicated Vocabulary Data
+        let VOCABULARY = [];
+        
+        let appState = {
+            settings: {
+                dailyGoal: 20,
+                autoPronounce: true,
+                speechRate: 0.9,
+                soundFx: true,
+                darkMode: false
+            },
+            progress: {}, // wordKey -> { status: 'new'|'learning'|'review'|'mastered', score: 0..100, correct: 0, incorrect: 0 }
+            mistakes: {}, // wordKey -> mistakeCount
+            streak: {
+                current: 0,
+                longest: 0,
+                lastStudyDate: null
+            },
+            stats: {
+                totalAnswered: 0,
+                totalCorrect: 0,
+                totalIncorrect: 0,
+                wordsStudiedTodayCount: 0,
+                lastStudiedDayDate: null
+            },
+            onboarded: false
+        };
+
+        // Active UI State Variables
+        let currentWordIndex = 0;
+        let activeVocabFilter = "all";
+        let activeQuizQuestions = [];
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let quizSessionMistakes = [];
+
+        /* ==================== 3. INITIALIZATION & DATA SANITIZATION ==================== */
+        document.addEventListener("DOMContentLoaded", () => {
+            try {
+                initApp();
+            } catch (err) {
+                console.error("Initialization Error:", err);
+            }
+        });
+
+        function initApp() {
+            // Deduplicate Vocabulary Dataset
+            const map = new Map();
+            RAW_VOCABULARY_DATA.forEach(item => {
+                const key = item.word.trim().toLowerCase();
+                if (!map.has(key)) {
+                    map.set(key, {
+                        word: item.word.trim(),
+                        ipa: item.ipa || "",
+                        partOfSpeech: item.partOfSpeech || "word",
+                        definition: item.definition || "No definition available",
+                        vietnamese: item.vietnamese || "Chưa có nghĩa tiếng Việt",
+                        example: item.example || `Sample sentence for ${item.word}.`
+                    });
+                }
+            });
+            VOCABULARY = Array.from(map.values());
+
+            // Load Saved Application Data
+            loadState();
+
+            // Initialize Progress structure for new words
+            VOCABULARY.forEach(item => {
+                const key = item.word.toLowerCase();
+                if (!appState.progress[key]) {
+                    appState.progress[key] = {
+                        status: "new",
+                        score: 0,
+                        correct: 0,
+                        incorrect: 0
+                    };
+                }
+            });
+
+            // Handle Theme Setting
+            applyTheme();
+
+            // Sync Settings Form UI
+            syncSettingsForm();
+
+            // Render Views
+            renderLearnView();
+            renderProgressSection();
+            renderMistakesList();
+
+            // Check Onboarding status
+            if (!appState.onboarded) {
+                document.getElementById("onboarding-modal").classList.add("active");
+            }
+
+            // Bind Global Keyboard Controls
+            setupKeyboardShortcuts();
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(APP_STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    appState = {
+                        ...appState,
+                        ...parsed,
+                        settings: { ...appState.settings, ...(parsed.settings || {}) },
+                        streak: { ...appState.streak, ...(parsed.streak || {}) },
+                        stats: { ...appState.stats, ...(parsed.stats || {}) }
+                    };
+                }
+            } catch (e) {
+                console.warn("Corrupted state detected, resetting state softly:", e);
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(appState));
+            } catch (e) {
+                console.error("Failed to save state to localStorage:", e);
+            }
+        }
+
+        function closeOnboarding() {
+            appState.onboarded = true;
+            saveState();
+            document.getElementById("onboarding-modal").classList.remove("active");
+            // Pronounce first word on load if autoPronounce enabled
+            if (appState.settings.autoPronounce) {
+                playCurrentPronunciation();
+            }
+        }
+
+        /* ==================== 4. NAVIGATION & THEME ==================== */
+        function switchSection(sectionId) {
+            document.querySelectorAll(".app-section").forEach(sec => sec.classList.remove("active"));
+            document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
+
+            const targetSection = document.getElementById(`section-${sectionId}`);
+            if (targetSection) targetSection.classList.add("active");
+
+            const navIndex = ["learn", "practice", "progress", "settings"].indexOf(sectionId);
+            if (navIndex !== -1) {
+                document.querySelectorAll(".nav-item")[navIndex].classList.add("active");
+            }
+
+            // Update Top Page Title
+            const titles = {
+                learn: "Learn Vocabulary",
+                practice: "Interactive Practice",
+                progress: "Learning Progress",
+                settings: "Application Settings"
+            };
+            document.getElementById("page-title").innerText = titles[sectionId] || "VocabMaster";
+
+            if (sectionId === "progress") {
+                renderProgressSection();
+            } else if (sectionId === "practice") {
+                renderMistakesList();
+            }
+        }
+
+        function applyTheme() {
+            if (appState.settings.darkMode) {
+                document.documentElement.setAttribute("data-theme", "dark");
+            } else {
+                document.documentElement.setAttribute("data-theme", "light");
+            }
+        }
+
+        /* ==================== 5. SPEECH SYNTHESIS ENGINE ==================== */
+        function speakWord(text) {
+            if (!("speechSynthesis" in window)) {
+                console.warn("Speech synthesis is not supported in this browser.");
+                return;
+            }
+
+            try {
+                window.speechSynthesis.cancel(); // Prevent audio overlap
+
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = "en-GB"; // British English requirement
+                utterance.rate = parseFloat(appState.settings.speechRate) || 0.9;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+
+                // Visual Indicator
+                const frontBtn = document.getElementById("btn-listen-front");
+                if (frontBtn) frontBtn.classList.add("speaking-active");
+
+                utterance.onend = () => {
+                    if (frontBtn) frontBtn.classList.remove("speaking-active");
+                };
+
+                utterance.onerror = () => {
+                    if (frontBtn) frontBtn.classList.remove("speaking-active");
+                };
+
+                window.speechSynthesis.speak(utterance);
+            } catch (err) {
+                console.error("Speech Synthesis Error:", err);
+            }
+        }
+
+        function playCurrentPronunciation() {
+            if (VOCABULARY[currentWordIndex]) {
+                speakWord(VOCABULARY[currentWordIndex].word);
+            }
+        }
+
+        /* Web Audio Chimes */
+        function playSoundFx(type) {
+            if (!appState.settings.soundFx) return;
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === "correct") {
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+                    osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); // E5
+                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.3);
+                } else if (type === "incorrect") {
+                    osc.frequency.setValueAtTime(220, ctx.currentTime); // A3
+                    osc.frequency.setValueAtTime(185, ctx.currentTime + 0.15); // F#3
+                    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.35);
+                }
+            } catch (e) {}
+        }
+
+        /* ==================== 6. LEARN & FLASHCARD CONTROLLER ==================== */
+        function renderLearnView() {
+            if (VOCABULARY.length === 0) return;
+
+            const word = VOCABULARY[currentWordIndex];
+            const wordKey = word.word.toLowerCase();
+            const prog = appState.progress[wordKey] || { status: "new" };
+
+            // Ensure card is flipped to front when word changes
+            const cardEl = document.getElementById("flashcard");
+            cardEl.classList.remove("flipped");
+
+            // Fill Card Front
+            document.getElementById("fc-word").innerText = word.word;
+            document.getElementById("fc-ipa").innerText = word.ipa;
+            document.getElementById("fc-pos").innerText = word.partOfSpeech;
+            
+            const badgeFront = document.getElementById("fc-status");
+            badgeFront.innerText = prog.status.toUpperCase();
+            badgeFront.className = `badge badge-${prog.status}`;
+
+            // Fill Card Back
+            document.getElementById("fc-def").innerText = word.definition;
+            document.getElementById("fc-viet").innerText = word.vietnamese;
+            document.getElementById("fc-example").innerText = `"${word.example}"`;
+            
+            const badgeBack = document.getElementById("fc-status-back");
+            badgeBack.innerText = prog.status.toUpperCase();
+            badgeBack.className = `badge badge-${prog.status}`;
+
+            // Update Daily Progress Bar
+            updateDailyProgressBar();
+
+            // Render Vocabulary Browser List
+            renderVocabBrowser();
+        }
+
+        function flipCard() {
+            const cardEl = document.getElementById("flashcard");
+            cardEl.classList.toggle("flipped");
+        }
+
+        function setWordIndex(index, autoPronounceWord = true) {
+            if (index < 0) index = VOCABULARY.length - 1;
+            if (index >= VOCABULARY.length) index = 0;
+
+            currentWordIndex = index;
+            renderLearnView();
+
+            if (autoPronounceWord && appState.settings.autoPronounce) {
+                setTimeout(() => playCurrentPronunciation(), 150);
+            }
+        }
+
+        function nextCard() { setWordIndex(currentWordIndex + 1); }
+        function prevCard() { setWordIndex(currentWordIndex - 1); }
+        function randomCard() {
+            const rand = Math.floor(Math.random() * VOCABULARY.length);
+            setWordIndex(rand);
+        }
+
+        function markCardStatus(action) {
+            const word = VOCABULARY[currentWordIndex];
+            const wordKey = word.word.toLowerCase();
+
+            if (!appState.progress[wordKey]) {
+                appState.progress[wordKey] = { status: "new", score: 0, correct: 0, incorrect: 0 };
+            }
+
+            if (action === "know") {
+                appState.progress[wordKey].status = "mastered";
+                appState.progress[wordKey].score = 100;
+            } else if (action === "review") {
+                appState.progress[wordKey].status = "review";
+                appState.progress[wordKey].score = 40;
+            }
+
+            recordStudyActivity();
+            saveState();
+            nextCard();
+        }
+
+        function startReviewSession() {
+            // Find first word due for review
+            const reviewIndex = VOCABULARY.findIndex(item => {
+                const key = item.word.toLowerCase();
+                return appState.progress[key] && appState.progress[key].status === "review";
+            });
+
+            if (reviewIndex !== -1) {
+                setWordIndex(reviewIndex);
+            }
+        }
+
+        /* Daily Progress & Streak Tracker */
+        function recordStudyActivity() {
+            const today = new Date().toISOString().split("T")[0];
+
+            // Update words studied today
+            if (appState.stats.lastStudiedDayDate !== today) {
+                appState.stats.lastStudiedDayDate = today;
+                appState.stats.wordsStudiedTodayCount = 1;
+            } else {
+                appState.stats.wordsStudiedTodayCount++;
+            }
+
+            // Streak Logic
+            if (!appState.streak.lastStudyDate) {
+                appState.streak.current = 1;
+                appState.streak.lastStudyDate = today;
+            } else if (appState.streak.lastStudyDate !== today) {
+                const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+                if (appState.streak.lastStudyDate === yesterday) {
+                    appState.streak.current += 1;
+                } else {
+                    appState.streak.current = 1; // Streak reset
+                }
+                appState.streak.lastStudyDate = today;
+            }
+
+            if (appState.streak.current > appState.streak.longest) {
+                appState.streak.longest = appState.streak.current;
+            }
+
+            // Update UI elements
+            document.getElementById("streak-count").innerText = appState.streak.current;
+            updateDailyProgressBar();
+        }
+
+        function updateDailyProgressBar() {
+            const goal = parseInt(appState.settings.dailyGoal) || 20;
+            const todayCount = appState.stats.wordsStudiedTodayCount || 0;
+            const pct = Math.min(100, Math.round((todayCount / goal) * 100));
+
+            document.getElementById("daily-progress-text").innerText = `${todayCount} / ${goal} words (${pct}%)`;
+            document.getElementById("daily-progress-bar").style.width = `${pct}%`;
+
+            // Count Review items
+            const dueCount = VOCABULARY.filter(item => {
+                const k = item.word.toLowerCase();
+                return appState.progress[k] && appState.progress[k].status === "review";
+            }).length;
+
+            const banner = document.getElementById("review-due-banner");
+            if (dueCount > 0) {
+                banner.style.display = "flex";
+                document.getElementById("review-due-count").innerText = dueCount;
+            } else {
+                banner.style.display = "none";
+            }
+        }
+
+        /* Vocabulary Browser Grid Filter & Search */
+        function setVocabFilter(filter, tabEl) {
+            activeVocabFilter = filter;
+            document.querySelectorAll(".filter-tab").forEach(tab => tab.classList.remove("active"));
+            if (tabEl) tabEl.classList.add("active");
+            renderVocabBrowser();
+        }
+
+        function renderVocabBrowser() {
+            const query = document.getElementById("search-vocab").value.trim().toLowerCase();
+            const container = document.getElementById("vocab-list-container");
+            container.innerHTML = "";
+
+            const filtered = VOCABULARY.filter(item => {
+                const k = item.word.toLowerCase();
+                const prog = appState.progress[k] || { status: "new" };
+
+                const matchesQuery = k.includes(query) || item.definition.toLowerCase().includes(query) || item.vietnamese.toLowerCase().includes(query);
+                const matchesFilter = (activeVocabFilter === "all") || (prog.status === activeVocabFilter);
+
+                return matchesQuery && matchesFilter;
+            });
+
+            document.getElementById("vocab-count").innerText = filtered.length;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color: var(--text-muted); padding:20px;">No vocabulary items found.</div>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const k = item.word.toLowerCase();
+                const prog = appState.progress[k] || { status: "new" };
+
+                const div = document.createElement("div");
+                div.className = "vocab-item";
+                div.onclick = () => {
+                    const originalIdx = VOCABULARY.findIndex(v => v.word.toLowerCase() === k);
+                    if (originalIdx !== -1) {
+                        setWordIndex(originalIdx);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                };
+
+                div.innerHTML = `
+                    <div>
+                        <div class="vocab-item-word">${item.word}</div>
+                        <div class="vocab-item-sub">${item.ipa} • ${item.vietnamese}</div>
+                    </div>
+                    <span class="badge badge-${prog.status}">${prog.status}</span>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        /* Keyboard Navigation Shortcuts */
+        function setupKeyboardShortcuts() {
+            document.addEventListener("keydown", (e) => {
+                // Ignore keypresses inside input controls
+                if (["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+                    return;
+                }
+
+                // Learn section shortcuts
+                const learnActive = document.getElementById("section-learn").classList.contains("active");
+                if (learnActive) {
+                    if (e.code === "Space") {
+                        e.preventDefault();
+                        flipCard();
+                    } else if (e.code === "ArrowRight") {
+                        nextCard();
+                    } else if (e.code === "ArrowLeft") {
+                        prevCard();
+                    } else if (e.code === "KeyL") {
+                        playCurrentPronunciation();
+                    } else if (e.code === "KeyK") {
+                        markCardStatus("know");
+                    } else if (e.code === "KeyR") {
+                        markCardStatus("review");
+                    }
+                }
+            });
+        }
+
+        /* ==================== 7. PRACTICE & QUIZ ENGINE ==================== */
+        function startPracticeSession() {
+            const count = parseInt(document.getElementById("practice-count-select").value) || 20;
+            const poolType = document.getElementById("practice-pool-select").value;
+            const mode = document.getElementById("practice-mode-select").value;
+
+            // Filter Pool
+            let pool = [...VOCABULARY];
+            if (poolType === "learning") {
+                pool = VOCABULARY.filter(item => {
+                    const st = (appState.progress[item.word.toLowerCase()] || {}).status;
+                    return st === "learning" || st === "review";
+                });
+            } else if (poolType === "mistakes") {
+                const mistakeKeys = Object.keys(appState.mistakes);
+                pool = VOCABULARY.filter(item => mistakeKeys.includes(item.word.toLowerCase()));
+            }
+
+            if (pool.length < 4) {
+                alert("Not enough vocabulary items in selected pool to generate a test. Falling back to All Vocabulary.");
+                pool = [...VOCABULARY];
+            }
+
+            // Shuffle Pool & Take Questions
+            pool.sort(() => Math.random() - 0.5);
+            const selectedWords = pool.slice(0, Math.min(count, pool.length));
+
+            activeQuizQuestions = selectedWords.map(target => {
+                let questionMode = mode;
+                if (mode === "mixed") {
+                    const modes = ["word-def", "def-word", "fill-blank", "listening", "spelling"];
+                    questionMode = modes[Math.floor(Math.random() * modes.length)];
+                }
+
+                // Distractors
+                const distractors = VOCABULARY
+                    .filter(v => v.word.toLowerCase() !== target.word.toLowerCase())
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 3);
+
+                const options = [target, ...distractors].sort(() => Math.random() - 0.5);
+
+                return {
+                    target,
+                    mode: questionMode,
+                    options
+                };
+            });
+
+            currentQuizIndex = 0;
+            quizScore = 0;
+            quizSessionMistakes = [];
+
+            document.getElementById("practice-config-card").style.display = "none";
+            document.getElementById("practice-result-card").style.display = "none";
+            document.getElementById("practice-active-card").style.display = "block";
+
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const q = activeQuizQuestions[currentQuizIndex];
+            if (!q) return;
+
+            document.getElementById("quiz-progress-text").innerText = `Question ${currentQuizIndex + 1} of ${activeQuizQuestions.length}`;
+            document.getElementById("quiz-score-text").innerText = `Score: ${quizScore}`;
+            
+            const feedbackBox = document.getElementById("quiz-feedback");
+            feedbackBox.className = "feedback-box";
+            feedbackBox.style.display = "none";
+            
+            document.getElementById("quiz-next-btn").style.display = "none";
+            document.getElementById("quiz-audio-trigger").style.display = "none";
+            document.getElementById("quiz-spelling-box").style.display = "none";
+            
+            const optionsGrid = document.getElementById("quiz-options-grid");
+            optionsGrid.style.display = "grid";
+            optionsGrid.innerHTML = "";
+
+            const promptEl = document.getElementById("quiz-prompt");
+
+            if (q.mode === "word-def") {
+                promptEl.innerText = `Choose the correct definition for "${q.target.word}":`;
+                q.options.forEach(opt => {
+                    const btn = document.createElement("button");
+                    btn.className = "option-btn";
+                    btn.innerText = opt.definition;
+                    btn.onclick = () => submitMultipleChoiceAnswer(opt, q.target);
+                    optionsGrid.appendChild(btn);
+                });
+            } else if (q.mode === "def-word") {
+                promptEl.innerText = `Which word matches: "${q.target.definition}"?`;
+                q.options.forEach(opt => {
+                    const btn = document.createElement("button");
+                    btn.className = "option-btn";
+                    btn.innerText = `${opt.word} (${opt.partOfSpeech})`;
+                    btn.onclick = () => submitMultipleChoiceAnswer(opt, q.target);
+                    optionsGrid.appendChild(btn);
+                });
+            } else if (q.mode === "fill-blank") {
+                const blankSentence = q.target.example.replace(new RegExp(q.target.word, "gi"), "_______");
+                promptEl.innerText = `Complete the sentence:\n"${blankSentence}"`;
+                q.options.forEach(opt => {
+                    const btn = document.createElement("button");
+                    btn.className = "option-btn";
+                    btn.innerText = opt.word;
+                    btn.onclick = () => submitMultipleChoiceAnswer(opt, q.target);
+                    optionsGrid.appendChild(btn);
+                });
+            } else if (q.mode === "listening") {
+                promptEl.innerText = "Listen to the word pronunciation and select the correct word:";
+                document.getElementById("quiz-audio-trigger").style.display = "block";
+                
+                // Play audio automatically
+                if (appState.settings.autoPronounce) {
+                    playCurrentQuizAudio();
+                }
+
+                q.options.forEach(opt => {
+                    const btn = document.createElement("button");
+                    btn.className = "option-btn";
+                    btn.innerText = opt.word;
+                    btn.onclick = () => submitMultipleChoiceAnswer(opt, q.target);
+                    optionsGrid.appendChild(btn);
+                });
+            } else if (q.mode === "spelling") {
+                promptEl.innerText = `Type the English word for:\n"${q.target.definition}" (${q.target.vietnamese})`;
+                optionsGrid.style.display = "none";
+                document.getElementById("quiz-spelling-box").style.display = "block";
+                const input = document.getElementById("spelling-input");
+                input.value = "";
+                setTimeout(() => input.focus(), 100);
+            }
+        }
+
+        function playCurrentQuizAudio() {
+            const q = activeQuizQuestions[currentQuizIndex];
+            if (q) speakWord(q.target.word);
+        }
+
+        function submitMultipleChoiceAnswer(selectedOpt, target) {
+            const isCorrect = (selectedOpt.word.toLowerCase() === target.word.toLowerCase());
+            processAnswerResult(isCorrect, target);
+
+            // Highlight Option Buttons
+            document.querySelectorAll("#quiz-options-grid .option-btn").forEach(btn => {
+                btn.disabled = true;
+                if (btn.innerText.includes(target.word) || btn.innerText === target.definition) {
+                    btn.classList.add("correct");
+                } else if (btn.innerText.includes(selectedOpt.word) || btn.innerText === selectedOpt.definition) {
+                    if (!isCorrect) btn.classList.add("incorrect");
+                }
+            });
+        }
+
+        function submitSpellingAnswer() {
+            const q = activeQuizQuestions[currentQuizIndex];
+            const inputVal = document.getElementById("spelling-input").value.trim().toLowerCase();
+            const targetVal = q.target.word.trim().toLowerCase();
+
+            const isCorrect = (inputVal === targetVal);
+            processAnswerResult(isCorrect, q.target);
+        }
+
+        function processAnswerResult(isCorrect, targetWordObj) {
+            const feedbackBox = document.getElementById("quiz-feedback");
+            feedbackBox.style.display = "block";
+
+            appState.stats.totalAnswered += 1;
+            const wordKey = targetWordObj.word.toLowerCase();
+
+            if (!appState.progress[wordKey]) {
+                appState.progress[wordKey] = { status: "new", score: 0, correct: 0, incorrect: 0 };
+            }
+
+            if (isCorrect) {
+                quizScore += 1;
+                appState.stats.totalCorrect += 1;
+                appState.progress[wordKey].correct += 1;
+                appState.progress[wordKey].score = Math.min(100, (appState.progress[wordKey].score || 0) + 20);
+                if (appState.progress[wordKey].score >= 80) appState.progress[wordKey].status = "mastered";
+
+                feedbackBox.className = "feedback-box correct show";
+                feedbackBox.innerHTML = `✓ <strong>Correct!</strong> ${targetWordObj.word} means "${targetWordObj.definition}".`;
+                playSoundFx("correct");
+            } else {
+                appState.stats.totalIncorrect += 1;
+                appState.progress[wordKey].incorrect += 1;
+                appState.progress[wordKey].status = "review";
+
+                // Save Mistake
+                appState.mistakes[wordKey] = (appState.mistakes[wordKey] || 0) + 1;
+                quizSessionMistakes.push(targetWordObj);
+
+                feedbackBox.className = "feedback-box incorrect show";
+                feedbackBox.innerHTML = `❌ <strong>Not quite!</strong> Correct answer: <strong>${targetWordObj.word}</strong> (${targetWordObj.vietnamese})<br><em>"${targetWordObj.definition}"</em>`;
+                playSoundFx("incorrect");
+            }
+
+            recordStudyActivity();
+            saveState();
+
+            document.getElementById("quiz-score-text").innerText = `Score: ${quizScore}`;
+            document.getElementById("quiz-next-btn").style.display = "block";
+        }
+
+        function nextQuizQuestion() {
+            currentQuizIndex += 1;
+            if (currentQuizIndex < activeQuizQuestions.length) {
+                renderQuizQuestion();
+            } else {
+                finishPracticeSession();
+            }
+        }
+
+        function finishPracticeSession() {
+            document.getElementById("practice-active-card").style.display = "none";
+            document.getElementById("practice-result-card").style.display = "block";
+
+            const total = activeQuizQuestions.length;
+            const pct = Math.round((quizScore / total) * 100);
+
+            document.getElementById("res-score").innerText = `${quizScore} / ${total}`;
+            document.getElementById("res-accuracy").innerText = `${pct}%`;
+            document.getElementById("res-correct").innerText = quizScore;
+            document.getElementById("res-incorrect").innerText = total - quizScore;
+
+            const reviewBtn = document.getElementById("btn-review-mistakes");
+            if (quizSessionMistakes.length > 0) {
+                reviewBtn.style.display = "block";
+            } else {
+                reviewBtn.style.display = "none";
+            }
+
+            renderMistakesList();
+        }
+
+        function resetPracticeConfig() {
+            document.getElementById("practice-result-card").style.display = "none";
+            document.getElementById("practice-config-card").style.display = "block";
+        }
+
+        function startMistakeReview() {
+            if (quizSessionMistakes.length > 0) {
+                const firstMistakeKey = quizSessionMistakes[0].word.toLowerCase();
+                const idx = VOCABULARY.findIndex(v => v.word.toLowerCase() === firstMistakeKey);
+                if (idx !== -1) {
+                    switchSection("learn");
+                    setWordIndex(idx);
+                }
+            }
+        }
+
+        function renderMistakesList() {
+            const container = document.getElementById("mistakes-list-container");
+            container.innerHTML = "";
+
+            const mistakeKeys = Object.keys(appState.mistakes);
+            document.getElementById("mistake-count-badge").innerText = mistakeKeys.length;
+
+            if (mistakeKeys.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color: var(--success); font-weight:600; padding: 16px;">✓ No mistakes recorded. Keep up the great work!</div>`;
+                return;
+            }
+
+            mistakeKeys.forEach(key => {
+                const vocabObj = VOCABULARY.find(v => v.word.toLowerCase() === key);
+                if (!vocabObj) return;
+
+                const count = appState.mistakes[key];
+                const div = document.createElement("div");
+                div.className = "vocab-item";
+                div.style.marginBottom = "8px";
+
+                div.innerHTML = `
+                    <div>
+                        <div class="vocab-item-word">${vocabObj.word} <span style="font-size:0.8rem; color:var(--danger);">(${count} mistakes)</span></div>
+                        <div class="vocab-item-sub">${vocabObj.definition}</div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="removeMistake('${key}')">Remove</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function removeMistake(wordKey) {
+            delete appState.mistakes[wordKey];
+            saveState();
+            renderMistakesList();
+        }
+
+        /* ==================== 8. PROGRESS DASHBOARD ==================== */
+        function renderProgressSection() {
+            const total = VOCABULARY.length;
+            let mastered = 0, learning = 0, review = 0, newCount = 0;
+
+            VOCABULARY.forEach(v => {
+                const st = (appState.progress[v.word.toLowerCase()] || {}).status || "new";
+                if (st === "mastered") mastered++;
+                else if (st === "learning") learning++;
+                else if (st === "review") review++;
+                else newCount++;
+            });
+
+            document.getElementById("stat-total-words").innerText = total;
+            document.getElementById("stat-mastered").innerText = mastered;
+            document.getElementById("stat-learning").innerText = learning;
+
+            const totalAns = appState.stats.totalAnswered || 0;
+            const accuracy = totalAns > 0 ? Math.round((appState.stats.totalCorrect / totalAns) * 100) : 0;
+            document.getElementById("stat-accuracy").innerText = `${accuracy}%`;
+
+            // Stacked Bar Labels
+            document.getElementById("count-mastered-lbl").innerText = mastered;
+            document.getElementById("count-review-lbl").innerText = review;
+            document.getElementById("count-learning-lbl").innerText = learning;
+            document.getElementById("count-new-lbl").innerText = newCount;
+
+            // Bar Widths
+            document.getElementById("bar-mastered").style.width = `${(mastered / total) * 100}%`;
+            document.getElementById("bar-review").style.width = `${(review / total) * 100}%`;
+            document.getElementById("bar-learning").style.width = `${(learning / total) * 100}%`;
+
+            // Analytics Text
+            document.getElementById("stat-streak").innerText = `${appState.streak.current} days`;
+            document.getElementById("stat-longest-streak").innerText = `${appState.streak.longest} days`;
+            document.getElementById("stat-words-today").innerText = `${appState.stats.wordsStudiedTodayCount || 0} words`;
+            document.getElementById("stat-total-answers").innerText = totalAns;
+        }
+
+        /* ==================== 9. SETTINGS & APP RESET ==================== */
+        function syncSettingsForm() {
+            document.getElementById("setting-daily-goal").value = appState.settings.dailyGoal;
+            document.getElementById("setting-auto-pronounce").checked = appState.settings.autoPronounce;
+            document.getElementById("setting-speech-rate").value = appState.settings.speechRate;
+            document.getElementById("setting-sound-fx").checked = appState.settings.soundFx;
+            document.getElementById("setting-dark-mode").checked = appState.settings.darkMode;
+        }
+
+        function updateSettings() {
+            appState.settings.dailyGoal = parseInt(document.getElementById("setting-daily-goal").value);
+            appState.settings.autoPronounce = document.getElementById("setting-auto-pronounce").checked;
+            appState.settings.speechRate = parseFloat(document.getElementById("setting-speech-rate").value);
+            appState.settings.soundFx = document.getElementById("setting-sound-fx").checked;
+            appState.settings.darkMode = document.getElementById("setting-dark-mode").checked;
+
+            applyTheme();
+            saveState();
+            updateDailyProgressBar();
+        }
+
+        function confirmResetProgress() {
+            if (confirm("Are you sure you want to reset all learning progress?\nThis will erase all learned word statuses, streaks, and mistake records.")) {
+                appState.progress = {};
+                appState.mistakes = {};
+                appState.streak = { current: 0, longest: 0, lastStudyDate: null };
+                appState.stats = { totalAnswered: 0, totalCorrect: 0, totalIncorrect: 0, wordsStudiedTodayCount: 0, lastStudiedDayDate: null };
+
+                VOCABULARY.forEach(item => {
+                    appState.progress[item.word.toLowerCase()] = { status: "new", score: 0, correct: 0, incorrect: 0 };
+                });
+
+                saveState();
+                initApp();
+                alert("Learning progress has been successfully reset.");
+            }
+        }
+    </script>
+</body>
+</html>

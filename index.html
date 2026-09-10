@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vocabulary Learning — B1–B2 English Vocabulary</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    --bg: #eef2fb;
+    --card: #ffffff;
+    --card-2: #f6f8ff;
+    --text: #1b2338;
+    --muted: #5a6784;
+    --primary: #4f46e5;
+    --primary-2: #6366f1;
+    --primary-soft: #e8eaff;
+    --border: #dde4f3;
+    --ok: #15803d;
+    --ok-soft: #dcfce7;
+    --bad: #b91c1c;
+    --bad-soft: #fee2e2;
+    --shadow: 0 8px 24px rgba(34, 52, 110, 0.08);
+  }
+
+  body.dark {
+    --bg: #0e1322;
+    --card: #161d31;
+    --card-2: #1c2440;
+    --text: #e9edf9;
+    --muted: #9aa6c4;
+    --primary: #6366f1;
+    --primary-2: #818cf8;
+    --primary-soft: #232b48;
+    --border: #2a3352;
+    --ok: #4ade80;
+    --ok-soft: #12331f;
+    --bad: #fca5a5;
+    --bad-soft: #3a1a1a;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 22px 16px 70px;
+  }
+
+  /* ---------- Header ---------- */
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .brand h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    letter-spacing: -0.02em;
+  }
+  .brand p {
+    margin: 2px 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .theme-btn {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 9px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: background 0.2s ease, transform 0.12s ease;
+  }
+  .theme-btn:active { transform: scale(0.97); }
+
+  /* ---------- Cards ---------- */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 18px;
+  }
+
+  /* ---------- Dashboard ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .stat {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 14px;
+  }
+  .stat .k {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .stat .v {
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin-top: 2px;
+    letter-spacing: -0.02em;
+  }
+  .bar {
+    height: 10px;
+    background: var(--primary-soft);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 16px;
+  }
+  .bar > i {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--primary), var(--primary-2));
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+  .bar-label {
+    margin-top: 8px;
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  /* ---------- Tabs ---------- */
+  nav.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 4px 0 18px;
+  }
+  .tab {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    padding: 10px 20px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.94rem;
+    font-weight: 600;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+  }
+
+  /* ---------- Sections ---------- */
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.18s ease, transform 0.12s ease, border-color 0.18s ease;
+  }
+  .btn:hover { background: var(--card-2); }
+  .btn:active { transform: scale(0.97); }
+  .btn.primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+  }
+  .btn.primary:hover { background: var(--primary-2); border-color: var(--primary-2); }
+  .btn.danger {
+    background: var(--bad-soft);
+    border-color: var(--bad);
+    color: var(--bad);
+  }
+  .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+  .btn.small { padding: 7px 12px; font-size: 0.84rem; }
+
+  /* ---------- Word of the day ---------- */
+  .tag-pill {
+    display: inline-block;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+  }
+  .wod-word {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .wod-body p { margin: 8px 0 14px; }
+  .muted { color: var(--muted); }
+  .badge {
+    display: inline-block;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-size: 0.76rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
+  }
+  .row-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* ---------- Flashcard ---------- */
+  .flash-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .flip { perspective: 1400px; }
+  .flip-inner {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+  }
+  .flip-inner.flipped { transform: rotateY(180deg); }
+  .face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--card-2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 22px;
+    overflow: auto;
+  }
+  .face.back {
+    transform: rotateY(180deg);
+    background: var(--card);
+    justify-content: flex-start;
+    padding-top: 28px;
+  }
+  .fc-word {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    word-break: break-word;
+  }
+  .fc-ipa {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin: 6px 0 12px;
+  }
+  .hint {
+    margin-top: 16px;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .fc-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .fc-meaning {
+    font-size: 1.08rem;
+    margin-bottom: 18px;
+    max-width: 520px;
+  }
+  .fc-vn {
+    font-size: 0.95rem;
+    color: var(--muted);
+    font-style: italic;
+    max-width: 520px;
+  }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+    justify-content: center;
+  }
+  .kbd-hint {
+    margin-top: 12px;
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0 16px;
+  }
+  .note-input {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: var(--card-2);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 0.92rem;
+    resize: vertical;
+    margin-top: 6px;
+  }
+  .note-input:focus { outline: 2px solid var(--primary-2); outline-offset: 1px; }
+  .save-hint {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 6px;
+    min-height: 18px;
+  }
+
+  /* ---------- Vocabulary list ---------- */
+  .filters {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .input {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: var(--card-2);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+  .input:focus { outline: 2px solid var(--primary-2); outline-offset: 1px; }
+  .list-meta {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .vocab-list { display: flex; flex-direction: column; gap: 8px; }
+  .v-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    justify-content: space-between;
+    border: 1px solid var(--border);
+    background: var(--card-2);
+    border-radius: 14px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: border-color 0.18s ease, transform 0.12s ease;
+  }
+  .v-row:hover { border-color: var(--primary-2); }
+  .v-row:active { transform: scale(0.995); }
+  .v-row.is-learned { border-left: 4px solid var(--ok); }
+  .v-main { min-width: 0; flex: 1 1 auto; }
+  .v-word {
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: baseline;
+  }
+  .v-ipa {
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .v-def {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .v-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex: 0 0 auto;
+  }
+  .learned-mark {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .v-row.is-learned .learned-mark { color: var(--ok); }
+  .empty {
+    padding: 24px 10px;
+    text-align: center;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  /* ---------- Quiz ---------- */
+  .quiz-top { margin-bottom: 8px; font-weight: 600; }
+  .quiz-q {
+    font-size: 1.15rem;
+    margin: 6px 0 16px;
+    line-height: 1.45;
+  }
+  .opt {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--border);
+    background: var(--card-2);
+    color: var(--text);
+    border-radius: 13px;
+    padding: 12px 15px;
+    margin-bottom: 9px;
+    cursor: pointer;
+    font-size: 0.93rem;
+    font-family: inherit;
+    line-height: 1.45;
+    transition: border-color 0.16s ease, background 0.16s ease, transform 0.1s ease;
+  }
+  .opt:hover:not(:disabled) { border-color: var(--primary-2); }
+  .opt:active:not(:disabled) { transform: scale(0.995); }
+  .opt:disabled { cursor: default; }
+  .opt.correct {
+    background: var(--ok-soft);
+    border-color: var(--ok);
+    color: var(--ok);
+    font-weight: 700;
+  }
+  .opt.wrong {
+    background: var(--bad-soft);
+    border-color: var(--bad);
+    color: var(--bad);
+    font-weight: 700;
+  }
+  .feedback {
+    min-height: 24px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin: 8px 0 12px;
+  }
+  .feedback.ok { color: var(--ok); }
+  .feedback.bad { color: var(--bad); }
+  .result-score {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .result-percent {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 16px;
+  }
+  h2 { letter-spacing: -0.01em; }
+
+  /* ---------- Progress ---------- */
+  .progress-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 26px;
+    align-items: center;
+    margin: 14px 0 22px;
+  }
+  .ring-wrap {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    flex: 0 0 auto;
+  }
+  .ring { width: 150px; height: 150px; transform: rotate(-90deg); }
+  .ring-bg {
+    fill: none;
+    stroke: var(--primary-soft);
+    stroke-width: 12;
+  }
+  .ring-fg {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 12;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease;
+  }
+  .ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.45rem;
+    font-weight: 700;
+  }
+  .progress-grid {
+    flex: 1 1 260px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 20px;
+  }
+  .prow {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    border-bottom: 1px dashed var(--border);
+    padding: 7px 0;
+    font-size: 0.9rem;
+  }
+  .prow span { color: var(--muted); }
+  .prow strong { font-weight: 700; }
+
+  /* ---------- Toast ---------- */
+  #toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translate(-50%, 20px);
+    background: var(--text);
+    color: var(--bg);
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 50;
+    max-width: 90vw;
+    text-align: center;
+  }
+  #toast.show {
+    opacity: 0.96;
+    transform: translate(-50%, 0);
+  }
+
+  footer.foot {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 30px;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (min-width: 700px) {
+    .flip-inner { height: 340px; }
+  }
+  @media (max-width: 720px) {
+    .filters { grid-template-columns: 1fr 1fr; }
+    .progress-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .brand h1 { font-size: 1.35rem; }
+    .fc-word { font-size: 1.6rem; }
+  }
+  @media (max-width: 480px) {
+    .filters { grid-template-columns: 1fr; }
+    .btn { padding: 10px 13px; font-size: 0.86rem; }
+    .wrap { padding: 16px 12px 60px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <h1>Vocabulary Learning</h1>
+      <p>B1–B2 English Vocabulary</p>
+    </div>
+    <button id="themeToggle" class="theme-btn" type="button">🌙 Dark mode</button>
+  </header>
+
+  <!-- ===== Dashboard ===== -->
+  <section class="card dashboard">
+    <div class="stats">
+      <div class="stat"><div class="k">Total words</div><div class="v" id="statTotal">0</div></div>
+      <div class="stat"><div class="k">Learned</div><div class="v" id="statLearned">0</div></div>
+      <div class="stat"><div class="k">Remaining</div><div class="v" id="statRemaining">0</div></div>
+      <div class="stat"><div class="k">Progress</div><div class="v" id="statPercent">0%</div></div>
+    </div>
+    <div class="bar"><i id="progressBarFill"></i></div>
+    <div class="bar-label" id="progressLabel">Progress: 0 / 0 words</div>
+  </section>
+
+  <!-- ===== Tabs ===== -->
+  <nav class="tabs">
+    <button class="tab active" type="button" data-section="learn">Learn</button>
+    <button class="tab" type="button" data-section="vocab">Vocabulary</button>
+    <button class="tab" type="button" data-section="quiz">Quiz</button>
+    <button class="tab" type="button" data-section="progress">Progress</button>
+  </nav>
+
+  <!-- ===== Learn ===== -->
+  <section id="sectionLearn" class="section active">
+
+    <div class="card">
+      <span class="tag-pill">Word of the Day</span>
+      <div class="wod-body">
+        <div class="wod-word" id="wodWord">—</div>
+        <div class="muted" id="wodIpa">—</div>
+        <div style="margin-top:8px;"><span class="badge" id="wodPos">—</span></div>
+        <p id="wodMeaning">—</p>
+        <div class="row-actions">
+          <button class="btn" type="button" id="wodListen">🔊 Listen</button>
+          <button class="btn primary" type="button" id="wodLearn">Mark as learned</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="flash-head">
+        <span id="cardCounter">Card 1 / 1</span>
+        <button class="btn small" type="button" id="btnRandom">🎲 Random Word</button>
+      </div>
+
+      <div class="flip">
+        <div class="flip-inner" id="flipInner">
+          <div class="face front">
+            <div class="fc-word" id="cardWord">—</div>
+            <div class="fc-ipa" id="cardIpa">—</div>
+            <span class="badge" id="cardPos">—</span>
+            <div class="hint">Press “Flip” (or Space) to see the meaning</div>
+          </div>
+          <div class="face back">
+            <div class="fc-label">Definition</div>
+            <div class="fc-meaning" id="cardMeaning">—</div>
+            <div class="fc-label">Vietnamese meaning</div>
+            <div class="fc-vn" id="cardVn">Add your own note</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" type="button" id="btnPrev">← Previous</button>
+        <button class="btn primary" type="button" id="btnFlip">Flip</button>
+        <button class="btn" type="button" id="btnNext">Next →</button>
+      </div>
+      <div class="controls">
+        <button class="btn" type="button" id="btnListen">🔊 Listen</button>
+        <button class="btn" type="button" id="btnLearned">Mark as learned</button>
+      </div>
+      <div class="kbd-hint">Shortcuts: ← previous · → next · Space flip · Enter mark as learned</div>
+
+      <div class="divider"></div>
+      <div class="fc-label">My note</div>
+      <textarea id="noteInput" class="note-input" rows="2" placeholder="Write your own note or Vietnamese meaning…"></textarea>
+      <div class="save-hint" id="noteStatus"></div>
+    </div>
+  </section>
+
+  <!-- ===== Vocabulary ===== -->
+  <section id="sectionVocab" class="section">
+    <div class="card">
+      <div class="filters">
+        <input id="searchInput" class="input" type="search" placeholder="Search vocabulary…" autocomplete="off" />
+        <select id="posFilter" class="input">
+          <option value="all">All parts of speech</option>
+          <option value="n">Noun</option>
+          <option value="v">Verb</option>
+          <option value="adj">Adjective</option>
+          <option value="adv">Adverb</option>
+          <option value="exp">Expression</option>
+          <option value="phr">Phrase</option>
+        </select>
+        <select id="learnedFilter" class="input">
+          <option value="all">All</option>
+          <option value="learned">Learned</option>
+          <option value="unlearned">Not learned</option>
+        </select>
+        <select id="sortSelect" class="input">
+          <option value="az">Sort: A → Z</option>
+          <option value="data">Sort: original order</option>
+        </select>
+      </div>
+      <div class="list-meta" id="vocabCount"></div>
+      <div id="vocabList" class="vocab-list"></div>
+      <div id="vocabEmpty" class="empty" style="display:none;">No vocabulary found.</div>
+    </div>
+  </section>
+
+  <!-- ===== Quiz ===== -->
+  <section id="sectionQuiz" class="section">
+    <div class="card">
+      <div id="quizIntro">
+        <h2 style="margin-top:0;">Vocabulary Quiz</h2>
+        <p class="muted">10 random questions. Types: definition → word, word → definition, part of speech, and IPA recognition.</p>
+        <button class="btn primary" type="button" id="btnStartQuiz">Start Quiz</button>
+      </div>
+
+      <div id="quizPanel" style="display:none;">
+        <div class="quiz-top muted" id="quizProgress"></div>
+        <h2 class="quiz-q" id="quizQuestion"></h2>
+        <div id="quizOptions"></div>
+        <div id="quizFeedback" class="feedback"></div>
+        <button class="btn primary" type="button" id="btnNextQuestion" style="display:none;">Next question</button>
+      </div>
+
+      <div id="quizResult" style="display:none;">
+        <h2 style="margin-top:0;">Quiz complete!</h2>
+        <div class="result-score" id="resultScore">0 / 10</div>
+        <div class="result-percent" id="resultPercent">0%</div>
+        <button class="btn primary" type="button" id="btnRestartQuiz">Restart Quiz</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Progress ===== -->
+  <section id="sectionProgress" class="section">
+    <div class="card">
+      <h2 style="margin-top:0;">Your Progress</h2>
+      <div class="progress-flex">
+        <div class="ring-wrap">
+          <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+            <circle class="ring-fg" cx="60" cy="60" r="52" id="ringFg"></circle>
+          </svg>
+          <div class="ring-text" id="ringText">0%</div>
+        </div>
+        <div class="progress-grid">
+          <div class="prow"><span>Total vocabulary</span><strong id="pTotal">0</strong></div>
+          <div class="prow"><span>Learned words</span><strong id="pLearned">0</strong></div>
+          <div class="prow"><span>Remaining words</span><strong id="pRemaining">0</strong></div>
+          <div class="prow"><span>Completion</span><strong id="pPercent">0%</strong></div>
+          <div class="prow"><span>Quiz best score</span><strong id="pBest">—</strong></div>
+          <div class="prow"><span>Quiz average score</span><strong id="pAvg">—</strong></div>
+          <div class="prow"><span>Quizzes completed</span><strong id="pCount">0</strong></div>
+          <div class="prow"><span>Last score</span><strong id="pLast">—</strong></div>
+        </div>
+      </div>
+      <button class="btn danger" type="button" id="btnReset">Reset Progress</button>
+    </div>
+  </section>
+
+  <footer class="foot">Vocabulary Learning · works offline · your progress is saved in this browser</footer>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ============================================================
+     VOCABULARY DATA (complete list)
+     ============================================================ */
+  var VOCAB = [
+    { word: "academic", ipa: "/ˌækəˈdemɪk/", partOfSpeech: "adj", meaning: "related to studying and learning" },
+    { word: "component", ipa: "/kəmˈpəʊnənt/", partOfSpeech: "n", meaning: "one of the many parts that are in a machine, system, or idea" },
+    { word: "effective", ipa: "/ɪˈfektɪv/", partOfSpeech: "adj", meaning: "something that works well and produces the result that one wants" },
+    { word: "long-term", ipa: "/ˌlɒŋˈtɜːm/", partOfSpeech: "adj", meaning: "continuing for a long period of time" },
+    { word: "make an effort", ipa: "/meɪk ən ˈefət/", partOfSpeech: "exp", meaning: "to try, to attempt" },
+    { word: "structure", ipa: "/ˈstrʌktʃər/", partOfSpeech: "n", meaning: "the way things are connected" },
+    { word: "technique", ipa: "/tekˈniːk/", partOfSpeech: "n", meaning: "a method, a procedure by which something is performed" },
+    { word: "transfer", ipa: "/ˈtrænsfɜːr/", partOfSpeech: "v", meaning: "to move from one place, vehicle, etc., to another" },
+    { word: "alternative", ipa: "/ɔːlˈtɜːrnətɪv/", partOfSpeech: "adj", meaning: "different than what is usual or expected" },
+    { word: "apply", ipa: "/əˈplaɪ/", partOfSpeech: "v", meaning: "to use an idea or skill for a particular purpose" },
+    { word: "assess", ipa: "/əˈses/", partOfSpeech: "v", meaning: "to consider something in order to make a judgment" },
+    { word: "interact", ipa: "/ˌɪntərˈækt/", partOfSpeech: "v", meaning: "to communicate with someone through conversation, looks, or action" },
+    { word: "debate", ipa: "/dɪˈbeɪt/", partOfSpeech: "n", meaning: "a discussion about opinions on a topic" },
+    { word: "measure", ipa: "/ˈmeʒər/", partOfSpeech: "v", meaning: "to find the size, weight, speed, etc., of something" },
+    { word: "memorize", ipa: "/ˈmeməraɪz/", partOfSpeech: "v", meaning: "to remember something exactly, to learn something by heart" },
+    { word: "reform", ipa: "/rɪˈfɔːrm/", partOfSpeech: "v", meaning: "to change or improve something, especially government" },
+    { word: "accommodation", ipa: "/əˌkɒməˈdeɪʃən/", partOfSpeech: "n", meaning: "buildings or rooms where people stay, especially in a hotel" },
+    { word: "basic", ipa: "/ˈbeɪsɪk/", partOfSpeech: "adj", meaning: "the simplest and most necessary part of something" },
+    { word: "eager", ipa: "/ˈiːɡər/", partOfSpeech: "adj", meaning: "very excited about something that is going to happen soon" },
+    { word: "exhausting", ipa: "/ɪɡˈzɔːstɪŋ/", partOfSpeech: "adj", meaning: "very tiring" },
+    { word: "fabulous", ipa: "/ˈfæbjələs/", partOfSpeech: "adj", meaning: "great, wonderful" },
+    { word: "possession", ipa: "/pəˈzeʃən/", partOfSpeech: "n", meaning: "a piece of property, a belonging" },
+    { word: "range", ipa: "/reɪndʒ/", partOfSpeech: "n", meaning: "a number of different things of the same kind" },
+    { word: "unique", ipa: "/juːˈniːk/", partOfSpeech: "adj", meaning: "one of a kind" },
+    { word: "assume", ipa: "/əˈsjuːm/", partOfSpeech: "v", meaning: "to think something is true without proof" },
+    { word: "authorized", ipa: "/ˈɔːθəraɪzd/", partOfSpeech: "v", meaning: "to give official permission for something" },
+    { word: "departure", ipa: "/dɪˈpɑːrtʃər/", partOfSpeech: "n", meaning: "a leaving" },
+    { word: "expire", ipa: "/ɪkˈspaɪər/", partOfSpeech: "v", meaning: "to end or become unusable after a period of time" },
+    { word: "precaution", ipa: "/prɪˈkɔːʃən/", partOfSpeech: "n", meaning: "a step taken in advance to prevent harm" },
+    { word: "purchase", ipa: "/ˈpɜːrtʃəs/", partOfSpeech: "v", meaning: "to buy something" },
+    { word: "sincere", ipa: "/sɪnˈsɪər/", partOfSpeech: "adj", meaning: "honest in one’s thought and action, true" },
+    { word: "vulnerable", ipa: "/ˈvʌlnərəbəl/", partOfSpeech: "adj", meaning: "describing a person who is easily harmed, hurt, or attacked" },
+    { word: "credits", ipa: "/ˈkredɪts/", partOfSpeech: "n", meaning: "a list of people who made a movie, etc." },
+    { word: "crucial", ipa: "/ˈkruːʃəl/", partOfSpeech: "adj", meaning: "very important" },
+    { word: "director", ipa: "/dəˈrektər/", partOfSpeech: "n", meaning: "the person who decides how something appears on stage or on screen" },
+    { word: "exclusive", ipa: "/ɪkˈskluːsɪv/", partOfSpeech: "adj", meaning: "only involving the thing(s) mentioned" },
+    { word: "production", ipa: "/prəˈdʌkʃən/", partOfSpeech: "n", meaning: "the making of a movie" },
+    { word: "scene", ipa: "/siːn/", partOfSpeech: "n", meaning: "one part of a movie" },
+    { word: "studio", ipa: "/ˈstuːdiəʊ/", partOfSpeech: "n", meaning: "a place where an artist works" },
+    { word: "transform", ipa: "/trænsˈfɔːrm/", partOfSpeech: "v", meaning: "to change completely" },
+    { word: "ambition", ipa: "/æmˈbɪʃən/", partOfSpeech: "n", meaning: "a strong desire to achieve something" },
+    { word: "debut", ipa: "/ˈdeɪbjuː/", partOfSpeech: "n", meaning: "the first public performance or appearance" },
+    { word: "influential", ipa: "/ˌɪnfluˈenʃəl/", partOfSpeech: "adj", meaning: "having the power to change people’s thinking" },
+    { word: "inspiration", ipa: "/ˌɪnspəˈreɪʃən/", partOfSpeech: "n", meaning: "getting a good idea of what to do" },
+    { word: "metaphor", ipa: "/ˈmetəfɔːr/", partOfSpeech: "n", meaning: "describes something by referring to it as something else and saying the two things have similar qualities" },
+    { word: "passion", ipa: "/ˈpæʃən/", partOfSpeech: "n", meaning: "a very strong feeling or belief" },
+    { word: "preserve", ipa: "/prɪˈzɜːrv/", partOfSpeech: "v", meaning: "to save something or someone from being harmed or destroyed" },
+    { word: "represent", ipa: "/ˌreprɪˈzent/", partOfSpeech: "v", meaning: "to be or have the same meaning as something else" },
+    { word: "achievement", ipa: "/əˈtʃiːvmənt/", partOfSpeech: "n", meaning: "something important and difficult that is done" },
+    { word: "aspire", ipa: "/əˈspaɪər/", partOfSpeech: "v", meaning: "to desire and work toward achieving something" },
+    { word: "exotic", ipa: "/ɪɡˈzɒtɪk/", partOfSpeech: "adj", meaning: "unusual or interesting, usually foreign" },
+    { word: "feat", ipa: "/fiːt/", partOfSpeech: "n", meaning: "an impressive achievement" },
+    { word: "goal", ipa: "/ɡəʊl/", partOfSpeech: "n", meaning: "something you want to do in the future" },
+    { word: "record", ipa: "/ˈrekɔːrd/", partOfSpeech: "n", meaning: "the best time, distance, etc., in an athletic event" },
+    { word: "talent", ipa: "/ˈtælənt/", partOfSpeech: "n", meaning: "being able to do something very well without practice" },
+    { word: "verify", ipa: "/ˈverɪfaɪ/", partOfSpeech: "v", meaning: "to say that something is true" },
+    { word: "aggressive", ipa: "/əˈɡresɪv/", partOfSpeech: "adj", meaning: "acting as if you want to fight or attack someone" },
+    { word: "amateur", ipa: "/ˈæmətʃʊər/", partOfSpeech: "n", meaning: "someone who is still learning, not a professional" },
+    { word: "coach", ipa: "/kəʊtʃ/", partOfSpeech: "n", meaning: "a person who teaches, especially a sports team" },
+    { word: "enthusiastic", ipa: "/ɪnˌθuːziˈæstɪk/", partOfSpeech: "adj", meaning: "very excited" },
+    { word: "professional", ipa: "/prəˈfeʃənəl/", partOfSpeech: "adj", meaning: "related to a profession or a person who makes his or her living as an artist or athlete" },
+    { word: "role model", ipa: "/ˈrəʊl ˌmɒdl/", partOfSpeech: "n", meaning: "a person who people admire and want to act like" },
+    { word: "sense of humor", ipa: "/ˌsens əv ˈhjuːmər/", partOfSpeech: "phr", meaning: "the ability to understand and laugh at funny things" },
+    { word: "tournament", ipa: "/ˈtʊərnəmənt/", partOfSpeech: "n", meaning: "a competition with a series of games until there is one winner" },
+    { word: "breathe", ipa: "/briːð/", partOfSpeech: "v", meaning: "to take air into your lungs and send it out again" },
+    { word: "complex", ipa: "/ˈkɒmpleks/", partOfSpeech: "adj", meaning: "difficult, with many parts or pieces" },
+    { word: "consist of", ipa: "/kənˈsɪst əv/", partOfSpeech: "v", meaning: "to have or to depend on something" },
+    { word: "illness", ipa: "/ˈɪlnəs/", partOfSpeech: "n", meaning: "being sick or unwell" },
+    { word: "injury", ipa: "/ˈɪndʒəri/", partOfSpeech: "n", meaning: "to hurt your body" },
+    { word: "suffer", ipa: "/ˈsʌfər/", partOfSpeech: "v", meaning: "to have an unpleasant or difficult experience" },
+    { word: "surgery", ipa: "/ˈsɜːrdʒəri/", partOfSpeech: "n", meaning: "medical treatment when a doctor cuts open the body to fix or remove something" },
+    { word: "treatment", ipa: "/ˈtriːtmənt/", partOfSpeech: "n", meaning: "a method to make something unwell better" },
+    { word: "blind", ipa: "/blaɪnd/", partOfSpeech: "adj", meaning: "to not be able to see" },
+    { word: "bounce", ipa: "/baʊns/", partOfSpeech: "v", meaning: "to move away from a surface after hitting it" },
+    { word: "capable", ipa: "/ˈkeɪpəbəl/", partOfSpeech: "adj", meaning: "having the qualities or abilities needed" },
+    { word: "overcome", ipa: "/ˌəʊvərˈkʌm/", partOfSpeech: "v", meaning: "to control a feeling or problem that was preventing you from doing something" },
+    { word: "phenomenon", ipa: "/fɪˈnɒmɪnɒn/", partOfSpeech: "n", meaning: "an event or situation that cannot be explained" },
+    { word: "refine", ipa: "/rɪˈfaɪn/", partOfSpeech: "v", meaning: "to make something better by making small changes" },
+    { word: "sensitive", ipa: "/ˈsensɪtɪv/", partOfSpeech: "adj", meaning: "reacting easily to very small changes" },
+    { word: "sight", ipa: "/saɪt/", partOfSpeech: "n", meaning: "the ability to see" },
+    { word: "decorate", ipa: "/ˈdekəreɪt/", partOfSpeech: "v", meaning: "to beautify, to make festive" },
+    { word: "display", ipa: "/dɪˈspleɪ/", partOfSpeech: "v", meaning: "to place in a position to be seen" },
+    { word: "precious", ipa: "/ˈpreʃəs/", partOfSpeech: "adj", meaning: "extremely valuable; that should not be wasted" },
+    { word: "preserve", ipa: "/prɪˈzɜːrv/", partOfSpeech: "v", meaning: "to guard, to protect from harm or change" },
+    { word: "define", ipa: "/dɪˈfaɪn/", partOfSpeech: "v", meaning: "to explain something, to give the meaning" },
+    { word: "supplies", ipa: "/səˈplaɪz/", partOfSpeech: "n", meaning: "a quantity of goods of a specific kind necessary for an operation" },
+    { word: "throw (something) away", ipa: "/θrəʊ əˈweɪ/", partOfSpeech: "v", meaning: "to discard, to get rid of" },
+    { word: "universal", ipa: "/ˌjuːnɪˈvɜːrsəl/", partOfSpeech: "adj", meaning: "found or practiced everywhere" },
+    { word: "approximately", ipa: "/əˈprɒksɪmətli/", partOfSpeech: "adv", meaning: "estimated, about" },
+    { word: "convert", ipa: "/kənˈvɜːrt/", partOfSpeech: "v", meaning: "to change from one form to another" },
+    { word: "detail", ipa: "/ˈdiːteɪl/", partOfSpeech: "n", meaning: "a small point" },
+    { word: "isolated", ipa: "/ˈaɪsəleɪtɪd/", partOfSpeech: "adj", meaning: "to make alone or to be far away from others" },
+    { word: "loyal", ipa: "/ˈlɔɪəl/", partOfSpeech: "adj", meaning: "following and supporting a friend or organization" },
+    { word: "persuade", ipa: "/pərˈsweɪd/", partOfSpeech: "v", meaning: "to lead a person or group to believe or do something by arguing or reasoning with them" },
+    { word: "response", ipa: "/rɪˈspɒns/", partOfSpeech: "n", meaning: "a reaction to something done beforehand" },
+    { word: "switch", ipa: "/swɪtʃ/", partOfSpeech: "v", meaning: "to change quickly and completely" },
+    { word: "appealing", ipa: "/əˈpiːlɪŋ/", partOfSpeech: "adj", meaning: "interesting or attractive" },
+    { word: "capture", ipa: "/ˈkæptʃər/", partOfSpeech: "v", meaning: "to film or record for the purpose of preserving" },
+    { word: "extinct", ipa: "/ɪkˈstɪŋkt/", partOfSpeech: "adj", meaning: "something that has ended or died out" },
+    { word: "format", ipa: "/ˈfɔːrmæt/", partOfSpeech: "n", meaning: "the way in which something is presented" },
+    { word: "genre", ipa: "/ˈʒɒnrə/", partOfSpeech: "n", meaning: "type or style of music, art, or literature" },
+    { word: "lyrics", ipa: "/ˈlɪrɪks/", partOfSpeech: "n", meaning: "the words of a song" },
+    { word: "roots", ipa: "/ruːts/", partOfSpeech: "n", meaning: "the place or culture that something or someone comes from" },
+    { word: "essential", ipa: "/ɪˈsenʃəl/", partOfSpeech: "adj", meaning: "necessary, very important" },
+    { word: "album", ipa: "/ˈælbəm/", partOfSpeech: "n", meaning: "a collection of music put on a record or CD" },
+    { word: "boundary", ipa: "/ˈbaʊndəri/", partOfSpeech: "n", meaning: "a real or imaginary line that makes the edge of a location" },
+    { word: "incorporate", ipa: "/ɪnˈkɔːrpəreɪt/", partOfSpeech: "v", meaning: "to include things into a group" },
+    { word: "mature", ipa: "/məˈtʃʊər/", partOfSpeech: "adj", meaning: "becoming older and wiser" },
+    { word: "pioneer", ipa: "/ˌpaɪəˈnɪər/", partOfSpeech: "n", meaning: "the first person to do something or to work on something" },
+    { word: "release", ipa: "/rɪˈliːs/", partOfSpeech: "v", meaning: "to publish a book, DVD, or CD" },
+    { word: "revolution", ipa: "/ˌrevəˈluːʃən/", partOfSpeech: "n", meaning: "a complete change in thinking or methods" },
+    { word: "statement", ipa: "/ˈsteɪtmənt/", partOfSpeech: "n", meaning: "something written or said that tells an opinion or gives facts" },
+    { word: "campus", ipa: "/ˈkæmpəs/", partOfSpeech: "n", meaning: "the land and buildings of a university or college" },
+    { word: "concept", ipa: "/ˈkɒnsept/", partOfSpeech: "n", meaning: "an idea about how something is or should be done" },
+    { word: "enterprising", ipa: "/ˈentərpraɪzɪŋ/", partOfSpeech: "adj", meaning: "able to make money from new, interesting ideas" },
+    { word: "expand", ipa: "/ɪkˈspænd/", partOfSpeech: "v", meaning: "to get bigger" },
+    { word: "retail", ipa: "/ˈriːteɪl/", partOfSpeech: "n", meaning: "concerning the sale of things to people in stores" },
+    { word: "spur", ipa: "/spɜːr/", partOfSpeech: "v", meaning: "motivate, inspire" },
+    { word: "stationery", ipa: "/ˈsteɪʃənəri/", partOfSpeech: "n", meaning: "products used for writing letters and notes" },
+    { word: "resource", ipa: "/rɪˈzɔːrs/", partOfSpeech: "n", meaning: "money, skills, or time that is available when needed" },
+    { word: "fundamental", ipa: "/ˌfʌndəˈmentl/", partOfSpeech: "adj", meaning: "most important and necessary part of something" },
+    { word: "inclined to", ipa: "/ɪnˈklaɪnd/", partOfSpeech: "phr", meaning: "to believe something is likely to be correct" },
+    { word: "investigate", ipa: "/ɪnˈvestɪɡeɪt/", partOfSpeech: "v", meaning: "to try to find the truth or cause" },
+    { word: "opinion", ipa: "/əˈpɪnjən/", partOfSpeech: "n", meaning: "a personal belief that is not factual" },
+    { word: "persuasive", ipa: "/pərˈsweɪsɪv/", partOfSpeech: "adj", meaning: "to make other people believe something or do what is asked" },
+    { word: "regulation", ipa: "/ˌreɡjʊˈleɪʃən/", partOfSpeech: "n", meaning: "official rule" },
+    { word: "theory", ipa: "/ˈθɪəri/", partOfSpeech: "n", meaning: "an idea that explains why something happens but has not been proven to be true" },
+    { word: "thrive", ipa: "/θraɪv/", partOfSpeech: "v", meaning: "to do exceptionally well" },
+    { word: "consume", ipa: "/kənˈsjuːm/", partOfSpeech: "v", meaning: "to eat and drink" },
+    { word: "culinary", ipa: "/ˈkʌlɪnəri/", partOfSpeech: "adj", meaning: "related to food" },
+    { word: "cure", ipa: "/kjʊər/", partOfSpeech: "v", meaning: "to fix an illness completely" },
+    { word: "enhance", ipa: "/ɪnˈhɑːns/", partOfSpeech: "v", meaning: "to make more attractive or improved" },
+    { word: "equipment", ipa: "/ɪˈkwɪpmənt/", partOfSpeech: "n", meaning: "the tools and other things needed to do a job or activity" },
+    { word: "evolve", ipa: "/ɪˈvɒlv/", partOfSpeech: "v", meaning: "to change for the better" },
+    { word: "extract", ipa: "/ɪkˈstrækt/", partOfSpeech: "v", meaning: "to take out" },
+    { word: "resemble", ipa: "/rɪˈzembəl/", partOfSpeech: "v", meaning: "to look like" },
+    { word: "crave", ipa: "/kreɪv/", partOfSpeech: "v", meaning: "to want something very much" },
+    { word: "decay", ipa: "/dɪˈkeɪ/", partOfSpeech: "v", meaning: "to slowly become destroyed" },
+    { word: "distinctive", ipa: "/dɪˈstɪŋktɪv/", partOfSpeech: "adj", meaning: "different from others, special" },
+    { word: "moderation", ipa: "/ˌmɒdəˈreɪʃən/", partOfSpeech: "n", meaning: "in healthy or reasonable amounts" },
+    { word: "nature", ipa: "/ˈneɪtʃər/", partOfSpeech: "n", meaning: "the basic character or quality of something" },
+    { word: "nutritional", ipa: "/njuːˈtrɪʃənəl/", partOfSpeech: "adj", meaning: "related to the vitamins, minerals, etc., in food" },
+    { word: "stimulate", ipa: "/ˈstɪmjʊleɪt/", partOfSpeech: "v", meaning: "to increase energy or activity" },
+    { word: "undergo", ipa: "/ˌʌndərˈɡəʊ/", partOfSpeech: "v", meaning: "to experience something" },
+    { word: "access", ipa: "/ˈækses/", partOfSpeech: "v", meaning: "the right to enter a place or use a thing" },
+    { word: "content", ipa: "/ˈkɒntent/", partOfSpeech: "n", meaning: "information" },
+    { word: "ignore", ipa: "/ɪɡˈnɔːr/", partOfSpeech: "v", meaning: "to not pay attention to something on purpose" },
+    { word: "interactive", ipa: "/ˌɪntərˈæktɪv/", partOfSpeech: "adj", meaning: "something that a person can communicate with or that responds to a user’s actions" },
+    { word: "prominently", ipa: "/ˈprɒmɪnəntli/", partOfSpeech: "adv", meaning: "in an important way, easily seen" },
+    { word: "subtle", ipa: "/ˈsʌtl/", partOfSpeech: "adj", meaning: "not easy to notice" },
+    { word: "visible", ipa: "/ˈvɪzəbəl/", partOfSpeech: "adj", meaning: "something that can be seen" },
+    { word: "virtually", ipa: "/ˈvɜːrtʃuəli/", partOfSpeech: "adv", meaning: "almost, practically" },
+    { word: "consumer", ipa: "/kənˈsjuːmər/", partOfSpeech: "n", meaning: "someone who uses a product" },
+    { word: "flatter", ipa: "/ˈflætər/", partOfSpeech: "v", meaning: "to say something to make a product or person look or feel good" },
+    { word: "insensitive", ipa: "/ɪnˈsensətɪv/", partOfSpeech: "adj", meaning: "not noticing or caring about another person’s feelings" },
+    { word: "make fun of", ipa: "/meɪk fʌn əv/", partOfSpeech: "exp", meaning: "to say something that hurts or upsets someone" },
+    { word: "publicity", ipa: "/pʌbˈlɪsəti/", partOfSpeech: "n", meaning: "news to make a product or event popular" },
+    { word: "slogan", ipa: "/ˈsləʊɡən/", partOfSpeech: "n", meaning: "a saying or phrase that expresses a group’s or a company’s main message" },
+    { word: "submit", ipa: "/səbˈmɪt/", partOfSpeech: "v", meaning: "to give to somebody for their approval" },
+    { word: "supply", ipa: "/səˈplaɪ/", partOfSpeech: "v", meaning: "to provide something that is wanted or needed" },
+    { word: "alternative", ipa: "/ɔːlˈtɜːrnətɪv/", partOfSpeech: "n", meaning: "another option" },
+    { word: "anticipate", ipa: "/ænˈtɪsɪpeɪt/", partOfSpeech: "v", meaning: "to expect something to happen and to be ready for it" },
+    { word: "chemical", ipa: "/ˈkemɪkəl/", partOfSpeech: "n", meaning: "a substance in chemistry or made from a chemical process" },
+    { word: "clean", ipa: "/kliːn/", partOfSpeech: "v", meaning: "to clean a bathroom or kitchen with strong chemicals like bleach" },
+    { word: "consequence", ipa: "/ˈkɒnsɪkwəns/", partOfSpeech: "n", meaning: "something that happens as a result of an action" },
+    { word: "struggle", ipa: "/ˈstrʌɡəl/", partOfSpeech: "v", meaning: "to deal with something with great difficulty" },
+    { word: "devastating", ipa: "/ˈdevəsteɪtɪŋ/", partOfSpeech: "v", meaning: "something badly damaging" },
+    { word: "keen", ipa: "/kiːn/", partOfSpeech: "adj", meaning: "interested in" },
+    { word: "account for", ipa: "/əˈkaʊnt fɔːr/", partOfSpeech: "phr", meaning: "to form an amount or part of something" },
+    { word: "adopt", ipa: "/əˈdɒpt/", partOfSpeech: "v", meaning: "to start to use a particular style or behavior" },
+    { word: "deprive", ipa: "/dɪˈpraɪv/", partOfSpeech: "v", meaning: "to stop something from happening or being used" },
+    { word: "estimated", ipa: "/ˈestɪmeɪtɪd/", partOfSpeech: "adj", meaning: "approximate, about" },
+    { word: "ethical", ipa: "/ˈeθɪkəl/", partOfSpeech: "adj", meaning: "the idea of what is right and wrong" },
+    { word: "impact", ipa: "/ˈɪmpækt/", partOfSpeech: "n", meaning: "an effect that is large or important" },
+    { word: "modify", ipa: "/ˈmɒdɪfaɪ/", partOfSpeech: "v", meaning: "to change or alter partially" },
+    { word: "vital", ipa: "/ˈvaɪtəl/", partOfSpeech: "adj", meaning: "very important or necessary" },
+    { word: "alarming", ipa: "/əˈlɑːrmɪŋ/", partOfSpeech: "adj", meaning: "making someone feel worried or scared" },
+    { word: "accumulate", ipa: "/əˈkjuːmjʊleɪt/", partOfSpeech: "v", meaning: "to gradually become more and more" },
+    { word: "ambitious", ipa: "/æmˈbɪʃəs/", partOfSpeech: "adj", meaning: "(of a plan) large-scale, needing a lot of work to succeed" },
+    { word: "launch", ipa: "/lɔːntʃ/", partOfSpeech: "v", meaning: "to start something big and important" },
+    { word: "persistence", ipa: "/pərˈsɪstəns/", partOfSpeech: "n", meaning: "determination to do something that is difficult and that other people do not support" },
+    { word: "unite", ipa: "/juːˈnaɪt/", partOfSpeech: "v", meaning: "to come together or form a group to achieve something" },
+    { word: "volunteer", ipa: "/ˌvɒlənˈtɪər/", partOfSpeech: "v", meaning: "to agree to do something of one’s own free will rather than by necessity" },
+    { word: "waste", ipa: "/weɪst/", partOfSpeech: "n", meaning: "unwanted or worthless materials left after a process" },
+    { word: "availability", ipa: "/əˌveɪləˈbɪləti/", partOfSpeech: "n", meaning: "being easily found and used" },
+    { word: "drastically", ipa: "/ˈdræstɪkli/", partOfSpeech: "adv", meaning: "extreme and sudden" },
+    { word: "endangered", ipa: "/ɪnˈdeɪndʒərd/", partOfSpeech: "adj", meaning: "putting someone or something in danger of being hurt, damaged, or destroyed" },
+    { word: "exceed", ipa: "/ɪkˈsiːd/", partOfSpeech: "v", meaning: "to be more than (what is expected)" },
+    { word: "lack", ipa: "/læk/", partOfSpeech: "n", meaning: "when there is not enough of something" },
+    { word: "shortage", ipa: "/ˈʃɔːrtɪdʒ/", partOfSpeech: "n", meaning: "a state of not having enough, a lack of something" },
+    { word: "strain", ipa: "/streɪn/", partOfSpeech: "n", meaning: "worry that is caused by working or thinking too much" },
+    { word: "sustain", ipa: "/səˈsteɪn/", partOfSpeech: "v", meaning: "to be used at a level that won’t damage the environment" }
+  ];
+
+  var POS_LABEL = {
+    adj: "adjective",
+    n: "noun",
+    v: "verb",
+    adv: "adverb",
+    exp: "expression",
+    phr: "phrase"
+  };
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+  function $(id) { return document.getElementById(id); }
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  var toastTimer = null;
+  function toast(msg) {
+    var t = $("toast");
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add("show");
+    if (toastTimer) { clearTimeout(toastTimer); }
+    toastTimer = setTimeout(function () {
+      t.classList.remove("show");
+    }, 2200);
+  }
+
+  /* ============================================================
+     STATE / STORAGE
+     ============================================================ */
+  var STORE_KEY = "vocabAppState_v1";
+
+  var state = {
+    learned: {},
+    notes: {},
+    quizzes: [],
+    prefs: { dark: false },
+    lastCard: 0
+  };
+
+  function loadState() {
+    try {
+      var raw = window.localStorage.getItem(STORE_KEY);
+      if (!raw) return;
+      var parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return;
+      if (parsed.learned && typeof parsed.learned === "object") state.learned = parsed.learned;
+      if (parsed.notes && typeof parsed.notes === "object") state.notes = parsed.notes;
+      if (Array.isArray(parsed.quizzes)) state.quizzes = parsed.quizzes;
+      if (parsed.prefs && typeof parsed.prefs === "object") {
+        state.prefs.dark = !!parsed.prefs.dark;
+      }
+      if (typeof parsed.lastCard === "number" && isFinite(parsed.lastCard)) {
+        state.lastCard = parsed.lastCard;
+      }
+    } catch (err) {
+      console.error("Could not load saved state:", err);
+    }
+  }
+
+  function saveState() {
+    try {
+      window.localStorage.setItem(STORE_KEY, JSON.stringify(state));
+    } catch (err) {
+      console.error("Could not save state:", err);
+    }
+  }
+
+  function getLearnedCount() {
+    var c = 0;
+    for (var i = 0; i < VOCAB.length; i++) {
+      if (state.learned[i]) c++;
+    }
+    return c;
+  }
+
+  /* ============================================================
+     SPEECH
+     ============================================================ */
+  var voices = [];
+
+  function loadVoices() {
+    if (!("speechSynthesis" in window)) return;
+    try {
+      voices = window.speechSynthesis.getVoices() || [];
+    } catch (err) {
+      voices = [];
+    }
+  }
+
+  function speak(text) {
+    if (!("speechSynthesis" in window) || typeof window.SpeechSynthesisUtterance === "undefined") {
+      toast("Speech is not supported in this browser.");
+      return;
+    }
+    try {
+      window.speechSynthesis.cancel();
+      var clean = String(text).replace(/\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
+      if (!clean) return;
+      var u = new window.SpeechSynthesisUtterance(clean);
+      u.lang = "en-GB";
+      u.rate = 0.92;
+      u.pitch = 1;
+      if (!voices.length) loadVoices();
+      var v = null, i;
+      for (i = 0; i < voices.length; i++) {
+        var lang = (voices[i].lang || "").toLowerCase();
+        if (lang.indexOf("en-gb") === 0) { v = voices[i]; break; }
+      }
+      if (!v) {
+        for (i = 0; i < voices.length; i++) {
+          var lang2 = (voices[i].lang || "").toLowerCase();
+          if (lang2.indexOf("en") === 0) { v = voices[i]; break; }
+        }
+      }
+      if (v) u.voice = v;
+      window.speechSynthesis.speak(u);
+    } catch (err) {
+      console.error("Speech error:", err);
+      toast("Could not play audio.");
+    }
+  }
+
+  /* ============================================================
+     NAVIGATION
+     ============================================================ */
+  var SECTION_IDS = {
+    learn: "sectionLearn",
+    vocab: "sectionVocab",
+    quiz: "sectionQuiz",
+    progress: "sectionProgress"
+  };
+
+  function showSection(name) {
+    var keys = Object.keys(SECTION_IDS);
+    for (var i = 0; i < keys.length; i++) {
+      var key = keys[i];
+      var node = $(SECTION_IDS[key]);
+      if (node) {
+        if (key === name) node.classList.add("active");
+        else node.classList.remove("active");
+      }
+    }
+    var tabs = document.querySelectorAll(".tab");
+    for (var j = 0; j < tabs.length; j++) {
+      var tabSection = tabs[j].getAttribute("data-section");
+      if (tabSection === name) tabs[j].classList.add("active");
+      else tabs[j].classList.remove("active");
+    }
+    if (name === "vocab") renderVocabList();
+    if (name === "progress") renderStats();
+  }
+
+  /* ============================================================
+     FLASHCARD
+     ============================================================ */
+  var cardIndex = 0;
+  var flipped = false;
+
+  function setFlip(v) {
+    flipped = v;
+    var inner = $("flipInner");
+    if (!inner) return;
+    if (flipped) inner.classList.add("flipped");
+    else inner.classList.remove("flipped");
+  }
+
+  function toggleFlip() { setFlip(!flipped); }
+
+  function updateLearnedButton() {
+    var btn = $("btnLearned");
+    if (!btn) return;
+    if (state.learned[cardIndex]) {
+      btn.textContent = "✓ Learned (click to unmark)";
+    } else {
+      btn.textContent = "Mark as learned";
+    }
+  }
+
+  function renderCard() {
+    if (!VOCAB.length) return;
+    if (cardIndex < 0) cardIndex = VOCAB.length - 1;
+    if (cardIndex >= VOCAB.length) cardIndex = 0;
+
+    var item = VOCAB[cardIndex];
+
+    $("cardWord").textContent = item.word;
+    $("cardIpa").textContent = item.ipa;
+    $("cardPos").textContent = POS_LABEL[item.partOfSpeech] || item.partOfSpeech;
+    $("cardMeaning").textContent = item.meaning;
+
+    var note = state.notes[cardIndex];
+    $("cardVn").textContent = (note && String(note).trim()) ? String(note) : "Add your own note";
+
+    var ta = $("noteInput");
+    if (ta) ta.value = note ? String(note) : "";
+
+    $("noteStatus").textContent = "";
+    $("cardCounter").textContent = "Card " + (cardIndex + 1) + " / " + VOCAB.length;
+
+    updateLearnedButton();
+    state.lastCard = cardIndex;
+    saveState();
+  }
+
+  function goPrev() {
+    if (!VOCAB.length) return;
+    cardIndex = (cardIndex - 1 + VOCAB.length) % VOCAB.length;
+    setFlip(false);
+    renderCard();
+  }
+
+  function goNext() {
+    if (!VOCAB.length) return;
+    cardIndex = (cardIndex + 1) % VOCAB.length;
+    setFlip(false);
+    renderCard();
+  }
+
+  function toggleLearned() {
+    if (!VOCAB.length) return;
+    if (state.learned[cardIndex]) {
+      delete state.learned[cardIndex];
+    } else {
+      state.learned[cardIndex] = true;
+    }
+    saveState();
+    updateLearnedButton();
+    renderStats();
+    renderVocabList();
+    renderWordOfDayButton();
+    toast(state.learned[cardIndex] ? "Marked as learned" : "Removed from learned");
+  }
+
+  function openCard(index) {
+    if (index < 0 || index >= VOCAB.length) return;
+    cardIndex = index;
+    setFlip(false);
+    renderCard();
+    showSection("learn");
+    try {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err) {
+      window.scrollTo(0, 0);
+    }
+  }
+
+  function randomCard() {
+    if (!VOCAB.length) return;
+    var i = Math.floor(Math.random() * VOCAB.length);
+    openCard(i);
+  }
+
+  /* ============================================================
+     WORD OF THE DAY
+     ============================================================ */
+  var wodIndex = 0;
+
+  function renderWordOfDay() {
+    if (!VOCAB.length) return;
+    var d = new Date();
+    var seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+    wodIndex = seed % VOCAB.length;
+    var item = VOCAB[wodIndex];
+    $("wodWord").textContent = item.word;
+    $("wodIpa").textContent = item.ipa;
+    $("wodPos").textContent = POS_LABEL[item.partOfSpeech] || item.partOfSpeech;
+    $("wodMeaning").textContent = item.meaning;
+    renderWordOfDayButton();
+  }
+
+  function renderWordOfDayButton() {
+    var btn = $("wodLearn");
+    if (!btn) return;
+    btn.textContent = state.learned[wodIndex] ? "✓ Learned" : "Mark as learned";
+  }
+
+  /* ============================================================
+     STATS
+     ============================================================ */
+  function renderStats() {
+    var total = VOCAB.length;
+    var learned = getLearnedCount();
+    var remaining = total - learned;
+    var pct = total ? Math.round((learned / total) * 100) : 0;
+
+    $("statTotal").textContent = total;
+    $("statLearned").textContent = learned;
+    $("statRemaining").textContent = remaining;
+    $("statPercent").textContent = pct + "%";
+    $("progressBarFill").style.width = pct + "%";
+    $("progressLabel").textContent = "Progress: " + learned + " / " + total + " words";
+
+    $("pTotal").textContent = total;
+    $("pLearned").textContent = learned;
+    $("pRemaining").textContent = remaining;
+    $("pPercent").textContent = pct + "%";
+    $("ringText").textContent = pct + "%";
+
+    var circ = 2 * Math.PI * 52;
+    var ring = $("ringFg");
+    if (ring) {
+      ring.style.strokeDasharray = circ.toFixed(2);
+      ring.style.strokeDashoffset = (circ * (1 - pct / 100)).toFixed(2);
+    }
+
+    renderQuizHistory();
+  }
+
+  function renderQuizHistory() {
+    var q = state.quizzes;
+    if (!q || !q.length) {
+      $("pBest").textContent = "—";
+      $("pAvg").textContent = "—";
+      $("pCount").textContent = "0";
+      $("pLast").textContent = "—";
+      return;
+    }
+    var best = 0, sum = 0;
+    for (var i = 0; i < q.length; i++) {
+      var p = (typeof q[i].percent === "number") ? q[i].percent : 0;
+      if (p > best) best = p;
+      sum += p;
+    }
+    $("pBest").textContent = best + "%";
+    $("pAvg").textContent = Math.round(sum / q.length) + "%";
+    $("pCount").textContent = q.length;
+    var last = q[q.length - 1];
+    $("pLast").textContent = ((typeof last.percent === "number") ? last.percent : 0) + "%";
+  }
+
+  /* ============================================================
+     VOCABULARY LIST
+     ============================================================ */
+  function getFilteredIndices() {
+    var q = ($("searchInput").value || "").trim().toLowerCase();
+    var pos = $("posFilter").value;
+    var lf = $("learnedFilter").value;
+    var sortMode = $("sortSelect").value;
+
+    var out = [];
+    for (var i = 0; i < VOCAB.length; i++) {
+      var it = VOCAB[i];
+      if (pos !== "all" && it.partOfSpeech !== pos) continue;
+      if (lf === "learned" && !state.learned[i]) continue;
+      if (lf === "unlearned" && state.learned[i]) continue;
+      if (q) {
+        var hay = (it.word + " " + it.ipa + " " + it.partOfSpeech + " " +
+          (POS_LABEL[it.partOfSpeech] || "") + " " + it.meaning).toLowerCase();
+        if (hay.indexOf(q) === -1) continue;
+      }
+      out.push(i);
+    }
+
+    if (sortMode === "az") {
+      out.sort(function (a, b) {
+        var wa = VOCAB[a].word.toLowerCase();
+        var wb = VOCAB[b].word.toLowerCase();
+        if (wa < wb) return -1;
+        if (wa > wb) return 1;
+        return a - b;
+      });
+    } else {
+      out.sort(function (a, b) { return a - b; });
+    }
+    return out;
+  }
+
+  function renderVocabList() {
+    var list = $("vocabList");
+    if (!list) return;
+    var indices = getFilteredIndices();
+    list.innerHTML = "";
+
+    if (!indices.length) {
+      $("vocabEmpty").style.display = "block";
+      $("vocabCount").textContent = "";
+      return;
+    }
+    $("vocabEmpty").style.display = "none";
+    $("vocabCount").textContent = "Showing " + indices.length + " of " + VOCAB.length + " words";
+
+    var frag = document.createDocumentFragment();
+    for (var k = 0; k < indices.length; k++) {
+      var i = indices[k];
+      var it = VOCAB[i];
+
+      var row = document.createElement("div");
+      row.className = "v-row" + (state.learned[i] ? " is-learned" : "");
+      row.setAttribute("data-index", String(i));
+      row.setAttribute("role", "button");
+      row.setAttribute("tabindex", "0");
+
+      var main = document.createElement("div");
+      main.className = "v-main";
+
+      var w = document.createElement("div");
+      w.className = "v-word";
+      w.appendChild(document.createTextNode(it.word));
+
+      var ipaSpan = document.createElement("span");
+      ipaSpan.className = "v-ipa";
+      ipaSpan.textContent = it.ipa;
+      w.appendChild(ipaSpan);
+      main.appendChild(w);
+
+      var d = document.createElement("div");
+      d.className = "v-def";
+      d.textContent = it.meaning;
+      main.appendChild(d);
+
+      var side = document.createElement("div");
+      side.className = "v-side";
+
+      var badge = document.createElement("span");
+      badge.className = "badge";
+      badge.textContent = POS_LABEL[it.partOfSpeech] || it.partOfSpeech;
+      side.appendChild(badge);
+
+      var mark = document.createElement("span");
+      mark.className = "learned-mark";
+      mark.textContent = state.learned[i] ? "✓ Learned" : "Not learned";
+      side.appendChild(mark);
+
+      row.appendChild(main);
+      row.appendChild(side);
+      frag.appendChild(row);
+    }
+    list.appendChild(frag);
+  }
+
+  /* ============================================================
+     QUIZ
+     ============================================================ */
+  var QUIZ_LENGTH = 10;
+
+  var quiz = {
+    questions: [],
+    current: 0,
+    score: 0,
+    answered: false,
+    active: false
+  };
+
+  function uniqueRandomValues(getValue, excludeValue, count) {
+    var seen = {};
+    var pool = [];
+    for (var i = 0; i < VOCAB.length; i++) {
+      var v = getValue(VOCAB[i]);
+      if (v === excludeValue) continue;
+      if (seen[v]) continue;
+      seen[v] = true;
+      pool.push(v);
+    }
+    shuffle(pool);
+    return pool.slice(0, count);
+  }
+
+  function makeQuestion(type, idx) {
+    var item = VOCAB[idx];
+    var prompt = "";
+    var correct = "";
+    var distractors = [];
+
+    if (type === "A") {
+      prompt = "Which word means “" + item.meaning + "”?";
+      correct = item.word;
+      distractors = uniqueRandomValues(function (o) { return o.word; }, item.word, 3);
+    } else if (type === "B") {
+      prompt = "What does “" + item.word + "” mean?";
+      correct = item.meaning;
+      distractors = uniqueRandomValues(function (o) { return o.meaning; }, item.meaning, 3);
+    } else if (type === "C") {
+      var label = POS_LABEL[item.partOfSpeech];
+      if (!label) return null;
+      if (["noun", "verb", "adjective", "adverb"].indexOf(label) === -1) return null;
+      prompt = "What is the part of speech of “" + item.word + "”?";
+      correct = label;
+      var allPos = ["noun", "verb", "adjective", "adverb"];
+      for (var p = 0; p < allPos.length; p++) {
+        if (allPos[p] !== label) distractors.push(allPos[p]);
+      }
+      if (distractors.length < 3) return null;
+      distractors = distractors.slice(0, 3);
+    } else {
+      prompt = "Which word has the pronunciation " + item.ipa + "?";
+      correct = item.word;
+      distractors = uniqueRandomValues(function (o) { return o.word; }, item.word, 8);
+      var filtered = [];
+      for (var d = 0; d < VOCAB.length && filtered.length < 3; d++) {
+        if (d === idx) continue;
+        if (VOCAB[d].ipa === item.ipa) continue;
+        if (VOCAB[d].word === item.word) continue;
+        if (filtered.indexOf(VOCAB[d].word) !== -1) continue;
+        if (distractors.indexOf(VOCAB[d].word) !== -1) continue;
+        filtered.push(VOCAB[d].word);
+      }
+      if (filtered.length < 3) return null;
+      distractors = filtered;
+    }
+
+    if (!correct) return null;
+    distractors = distractors.slice(0, 3);
+    if (distractors.length < 3) return null;
+
+    var options = shuffle([correct].concat(distractors));
+    var correctIndex = options.indexOf(correct);
+    if (correctIndex === -1) return null;
+
+    return {
+      prompt: prompt,
+      options: options,
+      correctIndex: correctIndex,
+      type: type
+    };
+  }
+
+  function buildQuiz() {
+    var pool = [];
+    for (var i = 0; i < VOCAB.length; i++) pool.push(i);
+    shuffle(pool);
+
+    var target = Math.min(QUIZ_LENGTH, VOCAB.length);
+    var questions = [];
+    var types = ["A", "B", "C", "D"];
+
+    for (var k = 0; k < pool.length && questions.length < target; k++) {
+      var idx = pool[k];
+      var item = VOCAB[idx];
+      var allowed = ["A", "B", "D"];
+      var posLabel = POS_LABEL[item.partOfSpeech];
+      if (posLabel && ["noun", "verb", "adjective", "adverb"].indexOf(posLabel) !== -1) {
+        allowed.push("C");
+      }
+      var order = shuffle(allowed.slice());
+      var made = null;
+      for (var t = 0; t < order.length && !made; t++) {
+        made = makeQuestion(order[t], idx);
+      }
+      if (made) questions.push(made);
+    }
+
+    // If fewer than target (unlikely), fill with simple type A/B questions
+    if (questions.length < target && VOCAB.length >= 4) {
+      for (var m = 0; m < pool.length && questions.length < target; m++) {
+        var q = makeQuestion("B", pool[m]);
+        if (q) questions.push(q);
+      }
+    }
+
+    return questions;
+  }
+
+  function startQuiz() {
+    quiz.questions = buildQuiz();
+    if (!quiz.questions.length) {
+      toast("Not enough vocabulary to build a quiz.");
+      return;
+    }
+    quiz.current = 0;
+    quiz.score = 0;
+    quiz.answered = false;
+    quiz.active = true;
+
+    $("quizIntro").style.display = "none";
+    $("quizResult").style.display = "none";
+    $("quizPanel").style.display = "block";
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    var q = quiz.questions[quiz.current];
+    if (!q) { showQuizResult(); return; }
+
+    quiz.answered = false;
+    $("quizProgress").textContent = "Question " + (quiz.current + 1) + " / " + quiz.questions.length;
+    $("quizQuestion").textContent = q.prompt;
+
+    var box = $("quizOptions");
+    box.innerHTML = "";
+
+    for (var i = 0; i < q.options.length; i++) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "opt";
+      b.textContent = String.fromCharCode(65 + i) + ". " + q.options[i];
+      (function (choice, btn) {
+        btn.addEventListener("click", function () { answerQuestion(choice, btn); });
+      })(i, b);
+      box.appendChild(b);
+    }
+
+    var fb = $("quizFeedback");
+    fb.textContent = "";
+    fb.className = "feedback";
+    $("btnNextQuestion").style.display = "none";
+  }
+
+  function answerQuestion(choice, btn) {
+    if (quiz.answered) return;
+    quiz.answered = true;
+
+    var q = quiz.questions[quiz.current];
+    var buttons = $("quizOptions").querySelectorAll("button");
+
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].disabled = true;
+      if (i === q.correctIndex) buttons[i].classList.add("correct");
+    }
+
+    var fb = $("quizFeedback");
+    if (choice === q.correctIndex) {
+      quiz.score++;
+      fb.textContent = "Correct!";
+      fb.className = "feedback ok";
+    } else {
+      if (btn) btn.classList.add("wrong");
+      fb.textContent = "Incorrect. Correct answer: " + q.options[q.correctIndex];
+      fb.className = "feedback bad";
+    }
+
+    var nextBtn = $("btnNextQuestion");
+    nextBtn.style.display = "inline-block";
+    nextBtn.textContent = (quiz.current === quiz.questions.length - 1) ? "See results" : "Next question";
+  }
+
+  function nextQuestion() {
+    if (!quiz.answered) return;
+    quiz.current++;
+    if (quiz.current >= quiz.questions.length) showQuizResult();
+    else renderQuestion();
+  }
+
+  function showQuizResult() {
+    quiz.active = false;
+    var total = quiz.questions.length;
+    var pct = total ? Math.round((quiz.score / total) * 100) : 0;
+
+    $("quizPanel").style.display = "none";
+    $("quizResult").style.display = "block";
+    $("resultScore").textContent = quiz.score + " / " + total;
+    $("resultPercent").textContent = pct + "%";
+
+    state.quizzes.push({
+      score: quiz.score,
+      total: total,
+      percent: pct,
+      date: Date.now()
+    });
+    if (state.quizzes.length > 50) {
+      state.quizzes = state.quizzes.slice(state.quizzes.length - 50);
+    }
+    saveState();
+    renderStats();
+  }
+
+  /* ============================================================
+     RESET
+     ============================================================ */
+  function resetProgress() {
+    if (!window.confirm("Are you sure you want to reset all learning progress?")) return;
+    state.learned = {};
+    state.notes = {};
+    state.quizzes = [];
+    state.lastCard = 0;
+    saveState();
+
+    cardIndex = 0;
+    setFlip(false);
+    renderCard();
+    renderStats();
+    renderVocabList();
+    renderWordOfDayButton();
+
+    var ta = $("noteInput");
+    if (ta) ta.value = "";
+    $("noteStatus").textContent = "";
+
+    $("quizPanel").style.display = "none";
+    $("quizResult").style.display = "none";
+    $("quizIntro").style.display = "block";
+
+    toast("All learning progress has been reset.");
+  }
+
+  /* ============================================================
+     THEME
+     ============================================================ */
+  function applyTheme() {
+    var dark = !!state.prefs.dark;
+    if (dark) document.body.classList.add("dark");
+    else document.body.classList.remove("dark");
+    var btn = $("themeToggle");
+    if (btn) btn.textContent = dark ? "☀️ Light mode" : "🌙 Dark mode";
+  }
+
+  function toggleTheme() {
+    state.prefs.dark = !state.prefs.dark;
+    applyTheme();
+    saveState();
+  }
+
+  /* ============================================================
+     EVENTS
+     ============================================================ */
+  function bindEvents() {
+
+    var tabs = document.querySelectorAll(".tab");
+    for (var i = 0; i < tabs.length; i++) {
+      (function (tab) {
+        tab.addEventListener("click", function () {
+          var name = tab.getAttribute("data-section");
+          if (name) showSection(name);
+        });
+      })(tabs[i]);
+    }
+
+    $("themeToggle").addEventListener("click", toggleTheme);
+
+    $("btnPrev").addEventListener("click", goPrev);
+    $("btnNext").addEventListener("click", goNext);
+    $("btnFlip").addEventListener("click", toggleFlip);
+    $("btnLearned").addEventListener("click", toggleLearned);
+    $("btnRandom").addEventListener("click", randomCard);
+
+    $("btnListen").addEventListener("click", function () {
+      if (VOCAB[cardIndex]) speak(VOCAB[cardIndex].word);
+    });
+
+    $("wodListen").addEventListener("click", function () {
+      if (VOCAB[wodIndex]) speak(VOCAB[wodIndex].word);
+    });
+
+    $("wodLearn").addEventListener("click", function () {
+      if (!VOCAB.length) return;
+      if (state.learned[wodIndex]) delete state.learned[wodIndex];
+      else state.learned[wodIndex] = true;
+      saveState();
+      renderWordOfDayButton();
+      renderStats();
+      renderVocabList();
+      updateLearnedButton();
+      toast(state.learned[wodIndex] ? "Marked as learned" : "Removed from learned");
+    });
+
+    /* Vocabulary filters */
+    $("searchInput").addEventListener("input", renderVocabList);
+    $("posFilter").addEventListener("change", renderVocabList);
+    $("learnedFilter").addEventListener("change", renderVocabList);
+    $("sortSelect").addEventListener("change", renderVocabList);
+
+    /* Vocab list interaction */
+    $("vocabList").addEventListener("click", function (e) {
+      var node = e.target;
+      while (node && node !== this && !(node.className && String(node.className).indexOf("v-row") !== -1)) {
+        node = node.parentNode;
+      }
+      if (!node || node === this) return;
+      var idx = parseInt(node.getAttribute("data-index"), 10);
+      if (!isNaN(idx)) openCard(idx);
+    });
+
+    $("vocabList").addEventListener("keydown", function (e) {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var node = e.target;
+      if (!node || !node.getAttribute) return;
+      var idxAttr = node.getAttribute("data-index");
+      if (idxAttr === null) return;
+      e.preventDefault();
+      var idx = parseInt(idxAttr, 10);
+      if (!isNaN(idx)) openCard(idx);
+    });
+
+    /* Notes */
+    var noteTimer = null;
+    $("noteInput").addEventListener("input", function () {
+      if (!VOCAB.length) return;
+      var val = $("noteInput").value;
+      state.notes[cardIndex] = val;
+      var vn = $("cardVn");
+      if (vn) vn.textContent = (val && val.trim()) ? val : "Add your own note";
+      $("noteStatus").textContent = "Saving…";
+      if (noteTimer) clearTimeout(noteTimer);
+      noteTimer = setTimeout(function () {
+        saveState();
+        $("noteStatus").textContent = "Saved";
+        setTimeout(function () {
+          if ($("noteStatus").textContent === "Saved") $("noteStatus").textContent = "";
+        }, 1500);
+      }, 350);
+    });
+
+    /* Quiz */
+    $("btnStartQuiz").addEventListener("click", startQuiz);
+    $("btnRestartQuiz").addEventListener("click", startQuiz);
+    $("btnNextQuestion").addEventListener("click", nextQuestion);
+
+    /* Reset */
+    $("btnReset").addEventListener("click", resetProgress);
+
+    /* Keyboard shortcuts */
+    document.addEventListener("keydown", function (e) {
+      var learnSection = $("sectionLearn");
+      if (!learnSection || !learnSection.classList.contains("active")) return;
+
+      var target = e.target || {};
+      var tag = (target.tagName || "").toLowerCase();
+      if (tag === "input" || tag === "textarea" || tag === "select") return;
+      if (tag === "button" && (e.key === "Enter" || e.key === " ")) return;
+
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goPrev();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        goNext();
+      } else if (e.key === " " || e.code === "Space") {
+        e.preventDefault();
+        toggleFlip();
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        toggleLearned();
+      }
+    });
+
+    /* Voice list refresh */
+    if ("speechSynthesis" in window) {
+      try {
+        loadVoices();
+        if (typeof window.speechSynthesis.onvoiceschanged !== "undefined") {
+          window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+      } catch (err) {
+        console.error("Voice init error:", err);
+      }
+    }
+  }
+
+  /* ============================================================
+     INIT
+     ============================================================ */
+  function init() {
+    loadState();
+    applyTheme();
+
+    if (!VOCAB.length) {
+      $("vocabEmpty").style.display = "block";
+      $("vocabEmpty").textContent = "No vocabulary available.";
+      $("cardWord").textContent = "No vocabulary available.";
+      return;
+    }
+
+    cardIndex = state.lastCard;
+    if (typeof cardIndex !== "number" || isNaN(cardIndex) ||
+        cardIndex < 0 || cardIndex >= VOCAB.length) {
+      cardIndex = 0;
+    }
+
+    bindEvents();
+
+    renderCard();
+    renderWordOfDay();
+    renderStats();
+    renderVocabList();
+    showSection("learn");
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+</body>
+</html>
